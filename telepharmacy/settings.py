@@ -79,7 +79,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'MedicineTrack',
+<<<<<<< HEAD
         'PASSWORD': 'maroshaj@02', #Enter your postgres password
+=======
+        'PASSWORD': '@Mabosii_0411', #Enter your postgres password
+>>>>>>> 60a1f0826f1de6d70ab93ad55d534c4fe63d8b1c
         'USER': 'postgres',
         'HOST': 'localhost'
     }
