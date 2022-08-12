@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_countries',
     'MedicineTrack.apps.MedicinetrackConfig',
 ]
 
@@ -79,7 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'MedicineTrack',
-        'PASSWORD': 'Catherine@27', #Enter your postgres password
+        'PASSWORD': 'Catherine@27', 
         'USER': 'postgres',
         'HOST': 'localhost'
     }
