@@ -3,7 +3,7 @@ from django_countries.fields import CountryField
 # Create your models here.
 
 class Shipping(models.Model):
-    #order_id=models.OneToOneField(Order,on_delete=models.CASCADE)
+    order_id=models.OneToOneField(Order,on_delete=models.CASCADE)
     country= CountryField(blank=True)
     CITIES=(
         ('DOM','DODOMA'),
