@@ -1,0 +1,173 @@
+<!--Navbar-->
+{% load static %}
+<header>
+    <marquee behavior="alternate" direction="right">
+        <h3 class="my-4">TELE-PHARMACY</h3>
+    </marquee>
+</header>
+<nav class="navbar navbar-expand-lg navbar-info bg-info sticky-top">
+
+    <div class="container">
+
+        <!-- <a class="navbar-brand text-white bg-dark" href="{% url 'MedicineTrack:store' %}" ">Home</a>
+            <button class="navbar-toggler " type="button " data-toggle="collapse " data-target="#navbarSupportedContent " aria-controls="navbarSupportedContent " aria-expanded="false " aria-label="Toggle navigation ">
+                <span class="navbar-toggler-icon "></span>
+            </button> -->
+
+        <div class=" navbar-collapse " id="navbarSupportedContent ">
+            <ul class="navbar-nav mr-auto ">
+                <li class="nav-item active ">
+                    <a class="nav-link text-white " href="{% url 'MedicineTrack:store' %} ">Home <span
+                                class="sr-only ">(current)</span></a>
+                </li>
+                <li class="nav-item active ">
+                    <a class="nav-link text-white " href="{% url 'MedicineTrack:about' %} ">About Us <span
+                                class="sr-only ">(current)</span></a>
+                </li>
+                <li class="nav-item active ">
+                    <a class="nav-link text-white " href="{% url 'MedicineTrack:contact' %} ">Contact us <span
+                                class="sr-only ">(current)</span></a>
+                </li>
+                <li class="nav-item active ">
+                    <a class="nav-link text-white " href="{% url 'MedicineTrack:order' %} ">order <span
+                                class="sr-only ">(current)</span></a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item active ">
+                    <a class="nav-link text-white " href="{% url 'MedicineTrack:statistics' %} ">statistics <span
+                                class="sr-only ">(current)</span></a>
+                </li>
+                {% endif %}
+            </ul>
+
+            <ul class="navbar-nav ml-auto ">
+                <!-- USER AUTHENTICATION -->
+                {% if user.is_authenticated %}
+                <li class="nav-item active ">
+                    <button class="nav-link text-white rounded bg-primary border-0 " onclick="toggle_profile() ">{{user.username}}<span
+                                class="sr-only " id="profile_btn "></span></button>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link text-white " href=" {% url 'MedicineTrack:logout' %} ">Logout</a>
+                </li>
+                {% else %}
+                <!--LOGIN-->
+                {%url 'MedicineTrack:login' as urls %} {% if request.path != urls %}
+                <li class="nav-item ">
+                    <a class="nav-link text-white " href=" {% url 'MedicineTrack:login' %} ">Login</a>
+                </li>
+                {% endif %}
+                <!--REGISTER-->
+                {%url 'MedicineTrack:register' as urls %} {% if request.path != urls %}
+                <li class="nav-item ">
+                    <a class="nav-link text-white " href=" {% url 'MedicineTrack:register' %} ">Register</a>
+                </li>
+                {% endif %} {% endif %}
+                <div class="form-inline my-2 my-lg-0">
+
+                    <a href="{% url 'MedicineTrack:cart' %}">
+                        <img id="cart-icon" src="{% static 'images/cart.png' %}">
+                    </a>
+                    <p id="cart-total">{{cartMedicine}}</p>
+
+                </div>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<!--
+PROFILE
+-->
+<!--Table-->
+<div class="container position-fixed " id="profile " style="display:none; z-index:1; ">
+    <div class=" row my-2 ">
+        <div class="col-md-4 ">
+
+        </div>
+        <div class="col-md-8 ">
+            <div class="card " style="overflow-y:scroll;height:370px; ">
+                <div class="card-header bg-info text-white ">
+                    {{user.username}} Profile
+                </div>
+                <div class="card-body ">
+                    <div class="row ">
+                        <div class="col-md-8 ">
+                            <span class="h4 "> Profile Information</span> <a class="btn btn-info btn-sm float-right " href=" ">Edit</a>
+                            <hr>
+                            <table class="table bg-white table-borderless ">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row ">Name</th>
+                                        <td>{{user.username}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Email</th>
+                                        <td>{{user.email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Phone</th>
+                                        <td>00992283833</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Address</th>
+                                        <td>House Number 22 Dr. Ababio Street Ghana</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row ">Name</th>
+                                        <td>{{user.username}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Email</th>
+                                        <td>{{user.email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Phone</th>
+                                        <td>00992283833</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Address</th>
+                                        <td>House Number 22 Dr. Ababio Street Ghana</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="col-md-4 ">
+                            <img class="img-thumbnail " src="{% static 'images/back1.webp'%} " alt=" ">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!--End Table-->
+<script>
+    var profile_container = document.getElementById("profile ");
+    var btn_profile = document.getElementById("profile_btn ");
+    var toggle = true;
+
+    function toggle_profile() {
+
+
+        if (toggle) {
+            profile_container.style.display = "block ";
+            toggle = false;
+            btn_profile.innerHTML = " Close ";
+        } else {
+            profile_container.style.display = "none ";
+            toggle = true;
+            btn_profile.innerHTML = " {{user.username}} ";
+        }
+
+    }
+</script>
+<!--End Navbar-->

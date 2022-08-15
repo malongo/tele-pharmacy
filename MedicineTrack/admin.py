@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Retail,Order,Shipping
-# Register your models here.
+from .models import Status,OrderStatus,Medicine,Retail,OrderMedicine,Order,MedicinePrice,Shipping
 
-admin.site.register([Retail,Order,Shipping])
+# Register your models here.
+admin.site.register([Status,OrderStatus,Medicine,Retail,OrderMedicine,Order,MedicinePrice,Shipping])
+
