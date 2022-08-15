@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr> 
+            <th>OrderID</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Phonenumber</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ship in Shipping%}
+            <tr>
+                <td>{{ship.order_id}}</td>
+                <td>{{ship.country}}</td>
+                <td>{{ship.city}}</td>
+                <td>{{ship.address}}</td>
+                <td>{{ship.email}}</td>
+                <td>{{ship.phone_number}}</td>
+            </tr>
+              {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
