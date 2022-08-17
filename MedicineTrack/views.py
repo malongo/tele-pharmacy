@@ -1,23 +1,47 @@
-from .forms import FormShipping,RetailForm
-from django.shortcuts import render, redirect
+
+# <<<<<<< HEAD
+from django.shortcuts import render,redirect
+from django.http import HttpResponse
+from MedicineTrack.models import Retail,Contact
+from .forms import *
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate,login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from .models import *
 from django.http import JsonResponse
 import json
 
 # Create your views here.
-#ship=Shipping.objects.all()
 
+
+def details(request):
+    ship=Shipping.objects.all()
+    return render(request,'shippdetails.html',{'Shipping':ship})
 
 def index(request):
     return render(request, 'medicine/index.html')
 
-def details(request):
-    return render(request,'shippdetails.html',{'Shipping':ship})
+
+
+
+
+def RetailDetails(request):
+    retaildetails = Retail.objects.all()
+    return render(request,'retail.html',{'Retail':retaildetails})
+       
+
+def addRetail(request):
+    if request.method == 'POST':
+        form = FormRetail(request.POST or None)
+        if form.is_valid():
+            form.save()
+            return redirect('RetailDetails')
+    else:
+        form = FormRetail()
+    return render(request, 'addretail.html',{'form':form})
+
+
 
 # Create your views here.
 def store(request):
@@ -26,10 +50,20 @@ def store(request):
     return render(request, 'medicine/store.html',{'medicine':medicine})
 
 def about(request):
-    return render(request, 'medicine/store.html')
+    return render(request, 'medicine/about.html')
 
 def contact(request):
-    return render(request, 'medicine/store.html')
+    if request.method == 'POST':
+        contact=Contact()
+        name=request.POST.get('name')
+        email=request.POST.get('email')
+        subject=request.POST.get('subject')
+        contact.name=name
+        contact.email=email
+        contact.subject=subject
+        contact.save()
+        return HttpResponse("<h1>Thanks for contact us</h1>")
+    return render(request, 'medicine/contact.html')
 
 
 def login_request(request):

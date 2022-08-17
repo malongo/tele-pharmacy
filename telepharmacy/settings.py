@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_countries',
     'crispy_forms',
     'MedicineTrack.apps.MedicinetrackConfig',
+    'crispy_forms',
 ]
 
 CRISPY_TEMPLATE_PACK='bootstrap4'
@@ -139,3 +140,5 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
