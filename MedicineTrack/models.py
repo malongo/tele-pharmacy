@@ -15,7 +15,7 @@ class Medicine(models.Model):
     
     
     def __str__(self):
-        return str(self.description)
+        return str(self.name)
     
     @property
     def imageURL(self):
@@ -27,11 +27,8 @@ class Medicine(models.Model):
     
     @property
     def getPrice(self):
-        medicinePrice = self.medicineprice_set.all()
-        price = [item for item in medicinePrice]
-        return price
-    
-    
+        medicinePrice = MedicinePrice.objects.get(medicine_id=self)
+        return medicinePrice.price
 
 class MedicinePrice(models.Model):
     medicine_id = models.ForeignKey(Medicine, on_delete = models.CASCADE)
@@ -124,8 +121,8 @@ class OrderMedicine(models.Model):
     
     @property
     def get_total(self):
-        #total = self.medicine_id.price * self.quantity
-        return 45
+        total = self.medicine_id.getPrice * self.quantity
+        return total
         
 class Shipping(models.Model):
     order_id = models.OneToOneField(Order, on_delete = models.CASCADE)

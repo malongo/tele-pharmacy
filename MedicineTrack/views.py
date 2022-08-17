@@ -99,12 +99,13 @@ def order(request):
 
 def cart(request):
     if request.user.is_authenticated:
-        retail = request.user.retail
-        order, created = Order.objects.get_or_create(retail_id = retail, status=True)
-        items = order.ordermedicine_set.all()
-        medicinePrice = items
-        print(dir(medicinePrice))
-        cartMedicine = order.get_cart_items
+        if request.user.retail:
+            retail = request.user.retail
+            order, created = Order.objects.get_or_create(retail_id = retail, status=True)
+            items = order.ordermedicine_set.all()
+            medicinePrice = items
+            # print(dir(medicinePrice))
+            cartMedicine = order.get_cart_items
     else:
         items = []
         order = {'get_cart_items':0,'get_cart_total':0}
