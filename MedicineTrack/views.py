@@ -3,16 +3,48 @@ from .models import OrderMedicine,OrderStatus
 # Create your views here.
 
 from django.shortcuts import render, redirect
+from django.shortcuts import render,redirect
+from django.http import HttpResponse
+from MedicineTrack.models import Retail,Contact
+from .forms import *
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate,login, logout
 from django.contrib import messages
-from .forms import RetailForm
 from django.contrib.auth.models import User
-from .models import Medicine,MedicinePrice
 from django.core.cache import cache
-from .models import *
 from django.http import JsonResponse
 import json
+
+# Create your views here.
+
+
+def details(request):
+    ship=Shipping.objects.all()
+    return render(request,'shippdetails.html',{'Shipping':ship})
+
+def index(request):
+    return render(request, 'medicine/index.html')
+
+
+
+
+
+def RetailDetails(request):
+    retaildetails = Retail.objects.all()
+    return render(request,'retail.html',{'Retail':retaildetails})
+       
+
+def addRetail(request):
+    if request.method == 'POST':
+        form = FormRetail(request.POST or None)
+        if form.is_valid():
+            form.save()
+            return redirect('RetailDetails')
+    else:
+        form = FormRetail()
+    return render(request, 'addretail.html',{'form':form})
+
+
 
 # Create your views here.
 def store(request):
@@ -21,7 +53,7 @@ def store(request):
     return render(request, 'medicine/store.html',{'medicine':medicine})
 
 def about(request):
-    return render(request, 'medicine/store.html')
+    return render(request, 'medicine/about.html')
 
 def contact(request):
     return render(request, 'medicine/store.html')
@@ -30,6 +62,17 @@ def index(request):
 def show(request):
     shown = MedicinePrice.objects.all()
     return render(request,'showorder.html',{'shown':shown})
+    if request.method == 'POST':
+        contact=Contact()
+        name=request.POST.get('name')
+        email=request.POST.get('email')
+        subject=request.POST.get('subject')
+        contact.name=name
+        contact.email=email
+        contact.subject=subject
+        contact.save()
+        return HttpResponse("<h1>Thanks for contact us</h1>")
+    return render(request, 'medicine/contact.html')
 
 
 def login_request(request):
@@ -128,10 +171,17 @@ def checkout(request):
         retail = request.user.retail
         order, created = Order.objects.get_or_create(retail_id = retail, status=True)
         items = order.ordermedicine_set.all()
+        if request.method == 'POST':
+            form=FormShipping(request.POST or None,request.FILES)
+            if form.is_valid():
+                form.save()
+                return redirect('MedicineTrack:details')
+            
     else:
         items = []
         order = {'get_cart_items':0,'get_cart_total':0}
-    context = {'items':items,'order':order}
+    form = FormShipping()
+    context = {'items':items,'order':order,'form':form}
     return render(request,'medicine/checkout.html',context)
 
 
