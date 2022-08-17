@@ -1,29 +1,29 @@
-<<<<<<< HEAD
+# <<<<<<< HEAD
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from MedicineTrack.models import Retail,Contact
 from .forms import FormRetail
 from .forms import *
 
+
+
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import authenticate,login, logout
+from django.contrib import messages
+from .forms import RetailForm
+from django.contrib.auth.models import User
+from .models import Medicine,MedicinePrice
+from django.core.cache import cache
+from django.http import JsonResponse
+import json
+
 # Create your views here.
 def index(request):
     return render(request, 'medicine/index.html')
 
-def about(request):
-    return render(request, 'about.html')
 
-def contact(request):
-    if request.method == 'POST':
-        contact=Contact()
-        name=request.POST.get('name')
-        email=request.POST.get('email')
-        subject=request.POST.get('subject')
-        contact.name=name
-        contact.email=email
-        contact.subject=subject
-        contact.save()
-        return HttpResponse("<h1>Thanks for contact us</h1>")
-    return render(request, 'contact.html')
+
+
 
 def RetailDetails(request):
     retaildetails = Retail.objects.all()
@@ -41,18 +41,7 @@ def addRetail(request):
     return render(request, 'addretail.html',{'form':form})
 
 
-=======
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import authenticate,login, logout
-from django.contrib import messages
-from .forms import RetailForm
-from django.contrib.auth.models import User
-from .models import Medicine,MedicinePrice
-from django.core.cache import cache
-from .models import *
-from django.http import JsonResponse
-import json
+
 
 # Create your views here.
 def store(request):
@@ -61,10 +50,20 @@ def store(request):
     return render(request, 'medicine/store.html',{'medicine':medicine})
 
 def about(request):
-    return render(request, 'medicine/store.html')
+    return render(request, 'medicine/about.html')
 
 def contact(request):
-    return render(request, 'medicine/store.html')
+    if request.method == 'POST':
+        contact=Contact()
+        name=request.POST.get('name')
+        email=request.POST.get('email')
+        subject=request.POST.get('subject')
+        contact.name=name
+        contact.email=email
+        contact.subject=subject
+        contact.save()
+        return HttpResponse("<h1>Thanks for contact us</h1>")
+    return render(request, 'medicine/contact.html')
 
 
 def login_request(request):
@@ -193,4 +192,4 @@ def updateItem(request):
         orderMedicine.delete()
 
     return JsonResponse('Item was added', safe=False)
->>>>>>> d1e1965d5bdc091eef12f3c04bbb69ae343684a9
+# >>>>>>> d1e1965d5bdc091eef12f3c04bbb69ae343684a9
