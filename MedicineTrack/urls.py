@@ -6,7 +6,7 @@ from . import views
 app_name = "MedicineTrack"
 
 urlpatterns = [
-    path('shipping',views.shipping, name="shipping"),
+    #path('shipping',views.shipping, name="shipping"),
     path('details',views.details, name="details"),
     path('', views.store, name='store'),
     path('login', views.login_request, name='login'),

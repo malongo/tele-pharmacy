@@ -1,9 +1,8 @@
-from .forms import FormShipping
+from .forms import FormShipping,RetailForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate,login, logout
 from django.contrib import messages
-from .forms import RetailForm
 from django.contrib.auth.models import User
 from django.core.cache import cache
 from .models import *
@@ -11,8 +10,7 @@ from django.http import JsonResponse
 import json
 
 # Create your views here.
-ship=Shipping.objects.all()
-#ord=Retail.objects.get(retail_id)
+#ship=Shipping.objects.all()
 
 
 def index(request):
@@ -20,17 +18,6 @@ def index(request):
 
 def details(request):
     return render(request,'shippdetails.html',{'Shipping':ship})
-def shipping(request): 
-    if request.method == 'POST':
-        form=FormShipping(request.POST or None,request.FILES)
-        if form.is_valid():
-
-         form.save()
-         return redirect('MedicineTrack:details')
-    else:
-        form = FormShipping()
-    return render(request,'shipping.html',{'form':form})
-
 
 # Create your views here.
 def store(request):
@@ -140,10 +127,17 @@ def checkout(request):
         retail = request.user.retail
         order, created = Order.objects.get_or_create(retail_id = retail, status=True)
         items = order.ordermedicine_set.all()
+        if request.method == 'POST':
+            form=FormShipping(request.POST or None,request.FILES)
+            if form.is_valid():
+                form.save()
+                return redirect('MedicineTrack:details')
+            
     else:
         items = []
         order = {'get_cart_items':0,'get_cart_total':0}
-    context = {'items':items,'order':order}
+    form = FormShipping()
+    context = {'items':items,'order':order,'form':form}
     return render(request,'medicine/checkout.html',context)
 
 
