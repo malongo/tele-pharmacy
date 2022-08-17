@@ -1,5 +1,5 @@
 from django import forms
-<<<<<<< HEAD
+# <<<<<<< HEAD
 from MedicineTrack.models import Retail
 from .models import *
 
@@ -7,7 +7,7 @@ class FormRetail(forms.ModelForm):
     class Meta:
         model=Retail
         fields="__all__"
-=======
+
 from django.contrib.auth.models import User
 from django.db.models import fields
 
@@ -34,4 +34,4 @@ class RetailForm(forms.ModelForm):
             'username': None,
         }
 
->>>>>>> d1e1965d5bdc091eef12f3c04bbb69ae343684a9
+# >>>>>>> d1e1965d5bdc091eef12f3c04bbb69ae343684a9
