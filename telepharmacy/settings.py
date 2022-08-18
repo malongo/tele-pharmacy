@@ -39,8 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_countries',
+    'crispy_forms',
     'MedicineTrack.apps.MedicinetrackConfig',
+    
 ]
+
+CRISPY_TEMPLATE_PACK='bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,7 +86,7 @@ DATABASES = {
         'NAME': 'MedicineTrack',
         'PASSWORD': 'Catherine@27', 
         'USER': 'postgres',
-        'HOST': 'localhost'
+        'HOST': 'localhost',
     }
 }
 
@@ -136,3 +140,5 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

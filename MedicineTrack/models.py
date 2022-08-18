@@ -104,6 +104,7 @@ class OrderStatus(models.Model):
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
     status_name = models.CharField(max_length=100)
     Status = models.BooleanField(default=True)
+
     def __str__(self):
         return str(self.order_id)
     
@@ -115,6 +116,7 @@ class OrderMedicine(models.Model):
     quantity = models.IntegerField(default=0, null=True, blank=True)
     total_price = models.FloatField(null=True)
       
+
     def __str__(self):
         return str(self.medicine_id)
     
@@ -123,7 +125,6 @@ class OrderMedicine(models.Model):
     def get_total(self):
         total = self.medicine_id.getPrice * self.quantity
         return total
-        
 class Shipping(models.Model):
     order_id = models.OneToOneField(Order, on_delete = models.CASCADE)
     country = CountryField(blank = True)
@@ -142,3 +143,7 @@ class Shipping(models.Model):
     email = models.EmailField(max_length=254)
     phone_number = models.CharField(max_length=30)
 
+class Contact(models.Model):
+    name=models.CharField(max_length=254,null=False)
+    email=models.EmailField(null=False)
+    subject=models.TextField(null=False)

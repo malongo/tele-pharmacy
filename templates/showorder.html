@@ -1,6 +1,9 @@
-{% extends 'base.html' %}{% load static %}{% block title %} home page {% endblock %} {% block content %}
+ {% extends 'base.html' %}{% load static %}{% block title %} home page {% endblock %} {% block content %}
 
-<!--Table-->
+<center>
+    <h3>Medicine Order</h3>
+</center>
+
 <div class="container">
     <div class="row my-4">
         <div class="col-md-4">
@@ -11,17 +14,19 @@
                 <thead class="bg-info">
                     <tr class="text-white">
 
-                        <th scope="col">Name</th>
-                        <th scope="col">Order date</th>
+                        <th scope="col">Medicine_id</th>
+                        <th scope="col">price</th>
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {%for order in showOrder%}
+                    {%for x in shown%}
                     <tr>
-                        <td>{{order.retail_id}}</td>
-                        <td>{{order.order_date}}</td>
-                        <td>{{order.status}}</td>
+                        <td>{{x.medicine_id}}</td>
+                        <td>{{x.price}}</td>
+                        <td>{{x.status}}</td>
+
+                        <!-- <td>{{x.status}}</td> -->
                     </tr>
                     {%endfor%}
                 </tbody>
@@ -31,9 +36,4 @@
 
 </div>
 
-
-
-<!--End Table-->
-
-
-{% endblock %}
+{%endblock%}
