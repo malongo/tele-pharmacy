@@ -75,8 +75,8 @@ class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=False) #allow to see if order complete or not
     
-    def _str_(self):
-        return self.retail_id
+    def __str__(self):
+        return str(self.retail_id)
     
 #addition functions
     @property
@@ -102,7 +102,7 @@ class Order(models.Model):
   
 class OrderStatus(models.Model):
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
-    status_name = models.CharField(max_length=100)
+    status_name = models.ForeignKey(Status, on_delete=models.SET_DEFAULT,default=True)
     Status = models.BooleanField(default=True)
 
     def __str__(self):
@@ -112,7 +112,7 @@ class OrderStatus(models.Model):
        
 class OrderMedicine(models.Model):
     order_id = models.ForeignKey(Order, on_delete = models.CASCADE)
-    medicine_id = models.OneToOneField(Medicine, on_delete = models.CASCADE)
+    medicine_id = models.ForeignKey(Medicine, on_delete = models.CASCADE)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     total_price = models.FloatField(null=True)
       

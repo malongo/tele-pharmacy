@@ -1,6 +1,5 @@
 from .models import OrderMedicine,OrderStatus
 from django.shortcuts import render, redirect
-from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from MedicineTrack.models import Retail,Contact
 from .forms import *
@@ -27,26 +26,36 @@ def RetailDetails(request):
     retaildetails = Retail.objects.all()
     return render(request,'retail.html',{'Retail':retaildetails})
        
-def addRetail(request):
-    if request.method == 'POST':
-        form = FormRetail(request.POST or None)
-        if form.is_valid():
-            form.save()
-            return redirect('RetailDetails')
-    else:
-        form = FormRetail()
-    return render(request, 'addretail.html',{'form':form})
-
-
 
 # Create your views here.
 def store(request):
     medicine = Medicine.objects.all()
+    if request.user.is_authenticated:
+        retail = request.user.retail
+        order, created = Order.objects.get_or_create(retail_id = retail, status=True)
+        cartMedicine = order.get_cart_items
+   
+    else:
+        order = {'get_cart_items':0,'get_cart_total':0}
+        cartMedicine = order['get_cart_items']
     
-    return render(request, 'medicine/store.html',{'medicine':medicine})
+    return render(request, 'medicine/store.html',{'medicine':medicine,'cartMedicine':cartMedicine})
 
 def about(request):
-    return render(request, 'medicine/about.html')
+    if request.user.is_authenticated:
+        retail = request.user.retail
+        order, created = Order.objects.get_or_create(retail_id = retail, status=True)
+        items = order.ordermedicine_set.all()
+        medicinePrice = items
+        # print(dir(medicinePrice))
+        cartMedicine = order.get_cart_items
+   
+    else:
+        items = []
+        order = {'get_cart_items':0,'get_cart_total':0}
+        cartMedicine = order['get_cart_items']
+        
+    return render(request, 'medicine/about.html',{'cartMedicine':cartMedicine})
 
 def contact(request):
     if request.method == 'POST':
@@ -67,12 +76,15 @@ def login_request(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            print("username: ", username, " password: ", password)
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+                retail = Retail.objects.get(user_id=user.id)
+                print(retail.PhoneNumber_1)
+                print(retail.user_id.username)
+                print(retail.PhoneNumber_1)
                 messages.info(request, f"You are now logged in as {username}")
-                return redirect('/', {'user':user})
+                return redirect('/', {'retail':retail})
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -99,9 +111,9 @@ def register(request):
                     return redirect('MedicineTrack:register')
                 else:
                     user = User.objects.create_user(username=username,email=email,password=password)
-                    #create retail
-                    # retail = Retail.objects.create()
                     user.save()
+                    #create retail
+                    Retail.objects.create(user_id = user, PhoneNumber_1 = '0629444617')
                     user1 = authenticate(username=username, password=password)
                     if user is not None:
                         login(request, user)
@@ -136,11 +148,13 @@ def statistics(request):
     
 def order(request):
     if request.user.is_authenticated:
-        showOrder = Order.objects.all()
+        showOrder = Order.objects.filter(retail_id=request.user.retail)
+    
     else:
         showOrder = []
     return render(request, 'medicine/order.html',{'showOrder':showOrder})
 
+#already modified
 def cart(request):
     if request.user.is_authenticated:
         retail = request.user.retail
@@ -173,7 +187,7 @@ def checkout(request):
         items = []
         order = {'get_cart_items':0,'get_cart_total':0}
     form = FormShipping()
-    context = {'items':items,'order':order,'form':form}
+    context = {'items':items,'order':order,'form':form,}
     return render(request,'medicine/checkout.html',context)
 
 
@@ -201,4 +215,18 @@ def updateItem(request):
         orderMedicine.delete()
 
     return JsonResponse('Item was added', safe=False)
+
+
+
+def updateProfile(request):
+    user = request.user.retail
+    form = FormRetail(instance=user)
+    
+    if request.method == 'POST':
+        form = FormRetail(request.POST,request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('/', pk=user.id)
+    context = {'form':form}
+    return render(request, 'medicine/update-profile.html',context)
 

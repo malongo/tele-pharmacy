@@ -1,0 +1,35 @@
+<!--Table-->
+{% extends 'base.html' %} {% block title %} Retail Page {% endblock %} {% block content %}
+
+<div class="container profile">
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                Profile Page
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+
+                        <form action="" method="post">
+                            {% csrf_token%}
+                            <!-- csrf_token -->
+                            {{form.as_p}}
+                            <input type="submit" value="Update">
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+<!--End Table-->

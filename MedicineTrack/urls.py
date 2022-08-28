@@ -4,9 +4,9 @@ from . import views
 app_name = "MedicineTrack"
 
 urlpatterns = [
+   
     path('details',views.details, name="details"),
     path('Retaildetails', views.RetailDetails, name="RetailDetails"),
-    path('addretail', views.addRetail, name="addRetail"),
     path('contact', views.contact, name="contact"),
     path('about', views.about, name="about"),
     path('', views.store, name='store'),
@@ -19,4 +19,5 @@ urlpatterns = [
     path('cart', views.cart, name="cart"),
     path('checkout', views.checkout, name="checkout"),
     path('update_item/', views.updateItem, name="update_item"),
+    path('profile', views.updateProfile, name="update_profile"),
 ]

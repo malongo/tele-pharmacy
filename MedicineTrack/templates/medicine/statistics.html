@@ -7,13 +7,13 @@
     <div class="row my-5">
         <div class="col-md-6">
             <div class="bg-white">
-                <canvas id="myChart1" width="400" height="300"></canvas> {% for medicine in medicine %}
+                <canvas id="myChart1" width="400" height="300"></canvas>
                 <script>
                     var ctx = document.getElementById('myChart1').getContext('2d');
                     var myChart1 = new Chart(ctx, {
                         type: 'pie',
                         data: {
-                            labels: ['{{medicine.name}}', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                            labels: ['red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                             datasets: [{
                                 label: 'Products',
                                 data: [12, 19, 3, 5, 2, 3],
@@ -57,7 +57,7 @@
                     var myChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: ['{{medicine.name}}', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                            labels: ['red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                             datasets: [{
                                 label: 'Products',
                                 data: [12, 19, 3, 5, 2, 3],
@@ -92,7 +92,7 @@
                     });
                 </script>
 
-                {% endfor %}
+
             </div>
         </div>
     </div>

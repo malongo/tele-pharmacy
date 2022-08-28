@@ -80,12 +80,15 @@
 PROFILE
 -->
 <!--Table-->
+
 <div class="container position-fixed " id="profile " style="display:none; z-index:1; ">
     <div class=" row my-2 ">
         <div class="col-md-4 ">
 
         </div>
+
         <div class="col-md-8 ">
+
             <div class="card " style="overflow-y:scroll;height:370px; ">
                 <div class="card-header bg-info text-white ">
                     {{user.username}} Profile
@@ -93,7 +96,7 @@ PROFILE
                 <div class="card-body ">
                     <div class="row ">
                         <div class="col-md-8 ">
-                            <span class="h4 "> Profile Information</span> <a class="btn btn-info btn-sm float-right " href=" ">Edit</a>
+                            <span class="h4 "> Profile Information</span> <a class="btn btn-info btn-sm float-right " href="{% url 'MedicineTrack:update_profile' %} ">Edit</a>
                             <hr>
                             <table class="table bg-white table-borderless ">
                                 <tbody>
@@ -106,30 +109,31 @@ PROFILE
                                         <td>{{user.email}}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row ">Phone</th>
-                                        <td>00992283833</td>
+                                        <th scope="row ">Phone 1</th>
+                                        <td>{{user.retail.PhoneNumber_1}}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row ">Address</th>
-                                        <td>House Number 22 Dr. Ababio Street Ghana</td>
+                                        <th scope="row ">Phone 2</th>
+                                        <td>{{user.retail.PhoneNumber_2}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Country</th>
+                                        <td>{{user.retail.Country}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">City</th>
+                                        <td>{{user.retail.City}}</td>
                                     </tr>
 
                                     <tr>
-                                        <th scope="row ">Name</th>
-                                        <td>{{user.username}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row ">Email</th>
-                                        <td>{{user.email}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row ">Phone</th>
-                                        <td>00992283833</td>
-                                    </tr>
-                                    <tr>
                                         <th scope="row ">Address</th>
-                                        <td>House Number 22 Dr. Ababio Street Ghana</td>
+                                        <td>{{user.retail.Address}}</td>
                                     </tr>
+                                    <tr>
+                                        <th scope="row ">Organization Name</th>
+                                        <td>{{user.retail.OrganizationName}}</td>
+                                    </tr>
+
 
                                 </tbody>
                             </table>
