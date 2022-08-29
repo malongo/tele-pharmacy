@@ -47,7 +47,7 @@
 
             <button data-medicine="{{medicine.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
 
-            <a class="btn btn-outline-success" href="#">View</a> {% for medicine_price in medicine.medicineprice_set.all %}
+            <a class="btn btn-outline-success" href="{% url 'MedicineTrack:medicine-info' medicine.name %}">View</a> {% for medicine_price in medicine.medicineprice_set.all %}
             <h4 style="display: inline-block; float: right"><strong>${{medicine_price.price|floatformat:2}}</strong></h4>
             {% endfor %}
         </div>

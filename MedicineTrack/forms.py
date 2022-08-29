@@ -1,5 +1,5 @@
 from django import forms
-from MedicineTrack.models import Retail
+from django.contrib.auth.models import User
 from .models import *
 
 class FormRetail(forms.ModelForm):
@@ -7,16 +7,10 @@ class FormRetail(forms.ModelForm):
         model=Retail
         fields="__all__"
 
-from django.contrib.auth.models import User
-from django.db.models import fields
-from .models import Shipping
-
 class FormShipping(forms.ModelForm):
     class Meta:
-        model=Shipping
+        model=ShippingAddress
         fields="__all__"
-
-
 
 #forms here
 class DateInput(forms.DateInput):

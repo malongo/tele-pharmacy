@@ -3,10 +3,8 @@
 <!--Table-->
 <div class="container">
     <div class="row my-4">
-        <div class="col-md-4">
 
-        </div>
-        <div class="col-md-8">
+        <div class="col-md-8 mx-auto">
             <table class="table bg-white">
                 <thead class="bg-info">
                     <tr class="text-white">
@@ -19,9 +17,9 @@
                 <tbody>
                     {%for order in showOrder%}
                     <tr>
-                        <td>{{order.retail_id}}</td>
+                        <td>{{order.retail}}</td>
                         <td>{{order.order_date}}</td>
-                        <td>{{order.status}}</td>
+                        <td>{{order.get_status}}</td>
                     </tr>
                     {%endfor%}
                 </tbody>

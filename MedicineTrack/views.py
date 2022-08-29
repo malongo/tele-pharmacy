@@ -13,38 +13,24 @@ import json
 
 # Create your views here.
 
-
-def details(request):
-    ship=Shipping.objects.all()
-    return render(request,'shippdetails.html',{'Shipping':ship})
-
-def index(request):
-    return render(request, 'medicine/index.html')
-
-
-def RetailDetails(request):
-    retaildetails = Retail.objects.all()
-    return render(request,'retail.html',{'Retail':retaildetails})
-       
-
-# Create your views here.
-def store(request):
+def medicine_store(request):
     medicine = Medicine.objects.all()
     if request.user.is_authenticated:
         retail = request.user.retail
-        order, created = Order.objects.get_or_create(retail_id = retail, status=True)
+        order, created = Order.objects.get_or_create(retail = retail, complete=False)
         cartMedicine = order.get_cart_items
    
     else:
         order = {'get_cart_items':0,'get_cart_total':0}
         cartMedicine = order['get_cart_items']
     
-    return render(request, 'medicine/store.html',{'medicine':medicine,'cartMedicine':cartMedicine})
+    
+    return render(request, 'medicine/medicine-store.html',{'medicine':medicine,'cartMedicine':cartMedicine})
 
 def about(request):
     if request.user.is_authenticated:
         retail = request.user.retail
-        order, created = Order.objects.get_or_create(retail_id = retail, status=True)
+        order, created = Order.objects.get_or_create(retail = retail, complete=False)
         items = order.ordermedicine_set.all()
         medicinePrice = items
         # print(dir(medicinePrice))
@@ -67,8 +53,6 @@ def contact(request):
         return HttpResponse("<h1>Thanks for contact us</h1>")
     return render(request, 'medicine/contact.html')
 
-def index(request):
-    return render(request, 'medicine/index.html')
 
 def login_request(request):
     if request.method == 'POST':
@@ -79,19 +63,20 @@ def login_request(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                retail = Retail.objects.get(user_id=user.id)
-                print(retail.PhoneNumber_1)
-                print(retail.user_id.username)
-                print(retail.PhoneNumber_1)
-                messages.info(request, f"You are now logged in as {username}")
-                return redirect('/', {'retail':retail})
+                #check if is super user
+                if user.is_superuser:
+                    return redirect('/admin')
+                else:
+                    messages.info(request, f"You are now logged in as {username}")
+                    return redirect('/')
             else:
                 messages.error(request, "Invalid username or password.")
         else:
             messages.error(request, "Invalid username or password.")
         
     form = AuthenticationForm()
-    return render(request, 'medicine/store.html', context={"form":form})
+    return render(request, 'medicine/medicine-store.html', context={"form":form})
+
 
 def register(request):
     if request.method == 'POST':
@@ -113,11 +98,11 @@ def register(request):
                     user = User.objects.create_user(username=username,email=email,password=password)
                     user.save()
                     #create retail
-                    Retail.objects.create(user_id = user, PhoneNumber_1 = '0629444617')
-                    user1 = authenticate(username=username, password=password)
+                    Retail.objects.create(user = user, PhoneNumber_1 = '0629444617')
+                    user = authenticate(username=username, password=password)
                     if user is not None:
                         login(request, user)
-                        return redirect('/', {'user':user1})
+                        return redirect('/')
                     else:
                         return redirect('MedicineTrack:login')
             else:
@@ -125,7 +110,8 @@ def register(request):
                 return redirect('MedicineTrack:register')
     else:
         form = RetailForm()
-    return render(request, 'medicine/store.html', context={"form":form})
+    return render(request, 'medicine/medicine-store.html', context={"form":form})
+
 
 def logout_request(request):
     logout(request)
@@ -138,6 +124,11 @@ def order_medicine(request):
     return render(request, 'medicine/order_medcine.html')
 
 
+def medicine_info(request,pk):
+    medicine = Medicine.objects.filter(name=pk)
+    return render(request,'medicine/medicine-info.html',{'medicine':medicine})
+
+
 def statistics(request):
     if request.user.is_authenticated:
         medicine = Medicine.objects.all()
@@ -148,7 +139,7 @@ def statistics(request):
     
 def order(request):
     if request.user.is_authenticated:
-        showOrder = Order.objects.filter(retail_id=request.user.retail)
+        showOrder = Order.objects.filter(retail=request.user.retail)
     
     else:
         showOrder = []
@@ -158,8 +149,10 @@ def order(request):
 def cart(request):
     if request.user.is_authenticated:
         retail = request.user.retail
-        order, created = Order.objects.get_or_create(retail_id = retail, status=True)
+        order, created = Order.objects.get_or_create(retail = retail, complete=False)
         items = order.ordermedicine_set.all()
+        #added soon
+        OrderStatus.objects.get_or_create(order=order, status_name =Status.objects.get(pk=1))
         medicinePrice = items
         # print(dir(medicinePrice))
         cartMedicine = order.get_cart_items
@@ -175,7 +168,7 @@ def cart(request):
 def checkout(request):
     if request.user.is_authenticated:
         retail = request.user.retail
-        order, created = Order.objects.get_or_create(retail_id = retail, status=True)
+        order, created = Order.objects.get_or_create(retail = retail, complete=False)
         items = order.ordermedicine_set.all()
         if request.method == 'POST':
             form=FormShipping(request.POST or None,request.FILES)
@@ -195,14 +188,10 @@ def updateItem(request):
     data = json.loads(request.body)
     medicineId = data['medicineId']
     action = data['action']
-    print('Action:', action)
-    print('medicine:', medicineId)
-
     retail = request.user.retail
     medicine = Medicine.objects.get(id=medicineId)
-    order, created = Order.objects.get_or_create(retail_id=retail, status=True)
-    print(medicine)
-    orderMedicine, created = OrderMedicine.objects.get_or_create(order_id=order, medicine_id=medicine)
+    order, created = Order.objects.get_or_create(retail=retail, complete=False)
+    orderMedicine, created = OrderMedicine.objects.get_or_create(order=order, medicine=medicine)
 
     if action == 'add':
         orderMedicine.quantity = (orderMedicine.quantity + 1)

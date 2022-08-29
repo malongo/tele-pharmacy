@@ -57,7 +57,7 @@ class Retail(models.Model):
 
     )
     
-    user_id = models.OneToOneField(User, on_delete = models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     PhoneNumber_1 = models.CharField(max_length = 15,) 
     PhoneNumber_2 = models.CharField(max_length = 15, null = True)
     Country = CountryField(null=False)
@@ -68,15 +68,15 @@ class Retail(models.Model):
     Status = models.BooleanField(default = True)
 
     def __str__ (self):
-        return self.user_id.username 
+        return self.user.username 
         
 class Order(models.Model):
-    retail_id = models.ForeignKey(Retail,on_delete=models.CASCADE)
+    retail = models.ForeignKey(Retail,on_delete=models.CASCADE)
     order_date = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField(default=False) #allow to see if order complete or not
+    complete = models.BooleanField(default=False) #allow to see if order complete or not
     
     def __str__(self):
-        return str(self.retail_id)
+        return str(self.id) + " by " + str(self.retail) + ''
     
 #addition functions
     @property
@@ -84,7 +84,7 @@ class Order(models.Model):
         shipping = False
         orderitems = self.ordermedicine_set.all()
         for i in orderitems:
-            if i.product.digital == False:
+            if i.medicine == False:
                 shipping = True
         return shipping
 
@@ -99,34 +99,40 @@ class Order(models.Model):
         orderitems = self.ordermedicine_set.all()
         total = sum([item.quantity for item in orderitems])
         return total 
+    
+    @property
+    def get_status(self):
+        status_name = self.orderstatus_set.get()
+        return status_name.status_name.status_name
   
 class OrderStatus(models.Model):
-    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
     status_name = models.ForeignKey(Status, on_delete=models.SET_DEFAULT,default=True)
-    Status = models.BooleanField(default=True)
+    status = models.BooleanField(default=True)
 
     def __str__(self):
-        return str(self.order_id)
+        return str(self.order)
     
     
        
 class OrderMedicine(models.Model):
-    order_id = models.ForeignKey(Order, on_delete = models.CASCADE)
-    medicine_id = models.ForeignKey(Medicine, on_delete = models.CASCADE)
+    order = models.ForeignKey(Order, on_delete = models.CASCADE)
+    medicine = models.ForeignKey(Medicine,  on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     total_price = models.FloatField(null=True)
       
 
     def __str__(self):
-        return str(self.medicine_id)
+        return str(self.medicine)
     
     
     @property
     def get_total(self):
-        total = self.medicine_id.getPrice * self.quantity
+        total = self.medicine.getPrice * self.quantity
         return total
-class Shipping(models.Model):
-    order_id = models.OneToOneField(Order, on_delete = models.CASCADE)
+class ShippingAddress(models.Model):
+    retail = models.ForeignKey(Retail, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete = models.CASCADE)
     country = CountryField(blank = True)
     CITIES = (
         ('DOM','DODOMA'),
