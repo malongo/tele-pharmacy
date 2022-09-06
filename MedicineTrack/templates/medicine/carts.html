@@ -1,10 +1,10 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 
-<div class="row">
+<div class="row mx-2">
     <div class="col-lg-12">
         <div class="box-element">
             <!--store-->
-            <a class="btn btn-outline-dark" href="{% url 'MedicineTrack:store' %}">&#x2190; Continue Shopping</a>
+            <a class="btn navbar-link" href="{% url 'MedicineTrack:store' %}">&#x2190; Continue Shopping</a>
 
             <br>
             <br>
@@ -18,7 +18,7 @@
                     </th>
                     <th>
                         <!--checkout-->
-                        <a style="float:right; margin:5px;" class="btn btn-success" href="{% url 'MedicineTrack:checkout' %}">Checkout</a>
+                        <a style="float:right; margin:5px;" class="btn navbar-link" href="{% url 'MedicineTrack:checkout' %}">Checkout</a>
                     </th>
                 </tr>
             </table>

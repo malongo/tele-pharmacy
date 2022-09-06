@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {% load static %}{%load crispy_forms_tags%} {% block content %}
+<div class="container my-2">
+    <div class="mx-auto" style="width:50%">
+        <p class="bg-info ">
+            <a class="btn px-5 text-white" href="{{request.META.HTTP_REFERER}}">&#x2190; back</a>
+
+        </p>
+
+        <div>
+            <form class="form" action="" method="post">
+                {% csrf_token %}
+                <div class="form__group">
+                    <p>Are you sure you want to delete "{{obj}}"?</p>
+                </div>
+
+                <div>
+                    <input class="btn btn--main" type="submit" value="Confirm" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

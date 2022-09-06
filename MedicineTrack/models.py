@@ -6,6 +6,9 @@ from django.contrib.auth.models import User
 class Status(models.Model):
     status_name = models.CharField(default = True, unique = True, max_length = 100)
     status = models.BooleanField()
+    
+    def __str__(self):
+        return self.status_name
 
 class Medicine(models.Model):
     name = models.CharField(max_length=100)
@@ -73,6 +76,7 @@ class Retail(models.Model):
 class Order(models.Model):
     retail = models.ForeignKey(Retail,on_delete=models.CASCADE)
     order_date = models.DateTimeField(auto_now_add=True)
+    order_status = models.ForeignKey(Status, on_delete=models.SET_DEFAULT,default=True)
     complete = models.BooleanField(default=False) #allow to see if order complete or not
     
     def __str__(self):
@@ -99,32 +103,15 @@ class Order(models.Model):
         orderitems = self.ordermedicine_set.all()
         total = sum([item.quantity for item in orderitems])
         return total 
-    
-    @property
-    def get_status(self):
-        status_name = self.orderstatus_set.get()
-        return status_name.status_name.status_name
-  
-class OrderStatus(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    status_name = models.ForeignKey(Status, on_delete=models.SET_DEFAULT,default=True)
-    status = models.BooleanField(default=True)
-
-    def __str__(self):
-        return str(self.order)
-    
-    
-       
+      
 class OrderMedicine(models.Model):
     order = models.ForeignKey(Order, on_delete = models.CASCADE)
     medicine = models.ForeignKey(Medicine,  on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     total_price = models.FloatField(null=True)
       
-
     def __str__(self):
-        return str(self.medicine)
-    
+        return str(self.order) + " " + str(self.medicine)
     
     @property
     def get_total(self):

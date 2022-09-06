@@ -1,6 +1,6 @@
-from .models import OrderMedicine,OrderStatus
+from .models import OrderMedicine
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404,HttpResponseRedirect,JsonResponse
 from MedicineTrack.models import Retail,Contact
 from .forms import *
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -8,16 +8,27 @@ from django.contrib.auth import authenticate,login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.http import JsonResponse
+from django.db.models import Q
 import json
 
+from django.urls import reverse
 # Create your views here.
 
 def medicine_store(request):
-    medicine = Medicine.objects.all()
-    if request.user.is_authenticated:
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    medicine = Medicine.objects.filter(
+            Q(name__icontains = q) |
+            Q(description__icontains = q) 
+        )
+    
+    #medicine = Medicine.objects.all()
+    if request.user.is_authenticated and not request.user.is_superuser:
         retail = request.user.retail
-        order, created = Order.objects.get_or_create(retail = retail, complete=False)
+        try:
+             order, created = Order.objects.get_or_create(retail = retail, complete=False,order_status__status_name = 'Not submitted')
+        except Order.MultipleObjectsReturned:
+            order = Order.objects.filter(retail = retail, complete=False,order_status__status_name = 'Not submitted').first()
+        
         cartMedicine = order.get_cart_items
    
     else:
@@ -28,9 +39,13 @@ def medicine_store(request):
     return render(request, 'medicine/medicine-store.html',{'medicine':medicine,'cartMedicine':cartMedicine})
 
 def about(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and not request.user.is_superuser:
         retail = request.user.retail
-        order, created = Order.objects.get_or_create(retail = retail, complete=False)
+        try:
+             order, created = Order.objects.get_or_create(retail = retail, complete=False,order_status__status_name = 'Not submitted')
+        except Order.MultipleObjectsReturned:
+            order = Order.objects.filter(retail = retail, complete=False,order_status__status_name = 'Not submitted').first()
+        
         items = order.ordermedicine_set.all()
         medicinePrice = items
         # print(dir(medicinePrice))
@@ -138,21 +153,24 @@ def statistics(request):
     
     
 def order(request):
-    if request.user.is_authenticated:
-        showOrder = Order.objects.filter(retail=request.user.retail)
+    if request.user.is_authenticated and not request.user.is_superuser:
+        order = Order.objects.filter(retail=request.user.retail)
     
     else:
-        showOrder = []
-    return render(request, 'medicine/order.html',{'showOrder':showOrder})
+        order = []
+    return render(request, 'medicine/order.html',{'order':order})
 
 #already modified
 def cart(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and not request.user.is_superuser:
         retail = request.user.retail
-        order, created = Order.objects.get_or_create(retail = retail, complete=False)
+        try:
+             order, created = Order.objects.get_or_create(retail = retail, complete=False,order_status__status_name = 'Not submitted')
+        except Order.MultipleObjectsReturned:
+            #raise Http404("Your can't process to order at once remove one and continue") 
+            order = Order.objects.filter(retail = retail, complete=False,order_status__status_name = 'Not submitted').first()
         items = order.ordermedicine_set.all()
-        #added soon
-        OrderStatus.objects.get_or_create(order=order, status_name =Status.objects.get(pk=1))
+        
         medicinePrice = items
         # print(dir(medicinePrice))
         cartMedicine = order.get_cart_items
@@ -166,12 +184,15 @@ def cart(request):
     return render(request, 'medicine/carts.html', context)
 
 def checkout(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and not request.user.is_superuser:
         retail = request.user.retail
-        order, created = Order.objects.get_or_create(retail = retail, complete=False)
+        try:
+            order, created = Order.objects.get_or_create(retail = retail, complete=False,order_status__status_name = 'Not submitted')
+        except Order.MultipleObjectsReturned:
+            order = Order.objects.filter(retail = retail, complete=False,order_status__status_name = 'Not submitted').first()
         items = order.ordermedicine_set.all()
         if request.method == 'POST':
-            form=FormShipping(request.POST or None,request.FILES)
+            form=FormShipping(request.POST or None,request.FILES,instance =  retail)
             if form.is_valid():
                 form.save()
                 return redirect('MedicineTrack:details')
@@ -179,7 +200,7 @@ def checkout(request):
     else:
         items = []
         order = {'get_cart_items':0,'get_cart_total':0}
-    form = FormShipping()
+    form = FormShipping(instance = request.user.retail)
     context = {'items':items,'order':order,'form':form,}
     return render(request,'medicine/checkout.html',context)
 
@@ -190,7 +211,11 @@ def updateItem(request):
     action = data['action']
     retail = request.user.retail
     medicine = Medicine.objects.get(id=medicineId)
-    order, created = Order.objects.get_or_create(retail=retail, complete=False)
+    try:
+        order, created = Order.objects.get_or_create(retail = retail, complete=False,order_status__status_name = 'Not submitted')
+    except Order.MultipleObjectsReturned:
+        order = Order.objects.filter(retail = retail, complete=False,order_status__status_name = 'Not submitted').first()
+    
     orderMedicine, created = OrderMedicine.objects.get_or_create(order=order, medicine=medicine)
 
     if action == 'add':
@@ -218,4 +243,69 @@ def updateProfile(request):
             return redirect('/', pk=user.id)
     context = {'form':form}
     return render(request, 'medicine/update-profile.html',context)
+
+def payment(request,pk):
+    order = Order.objects.get(pk=pk)
+    items = order.ordermedicine_set.all()
+    status = Status.objects.all()
+    for status in status:
+        if status.status_name == 'wait for payment':
+            status.status = True
+            order.order_status = status
+            order.complete = True
+            order.save()
+        else:
+            status.status = False
+            status.save()
+    return render(request, 'medicine/payment.html',{'order':order,'items':items })
+
+def order_process(request,pk):
+   
+    
+    return redirect('MedicineTrack:payment')
+
+
+def get_data(request):
+    data ={
+        "sales":10,
+        "customer" :45,
+    }
+    
+    return JsonResponse(data)
+
+def delete_order(request,pk):
+    order = Order.objects.get(id=pk)
+   
+    if request.user != order.retail.user:
+        return HttpResponse("your not allowed here!!!")
+    
+    if request.method == 'POST':
+        order.delete()
+        return redirect('MedicineTrack:order')
+    return render(request,'medicine/delete-order.html',{'obj':order})
+
+def edit_order(request,pk):
+    order = Order.objects.get(pk=pk)
+    # items = order.ordermedicine_set.all()
+    status = Status.objects.all()
+    for status in status:
+        if status.status_name == 'Not submitted':
+            status.status = True
+            order.order_status = status
+            order.complete = False
+            order.save()
+        else:
+            status.status = False
+            status.save()
+            
+    return redirect('MedicineTrack:order')
+    
+def message(request,message):
+    
+    return render(request, 'medicine/message.html',{'message':message})
+
+
+def user_profile(request):
+    return render(request,'medicine/profile.html')
+    
 

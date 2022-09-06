@@ -1,7 +1,12 @@
+from dataclasses import field
 from django import forms
 from django.contrib.auth.models import User
 from .models import *
 
+class user_Form(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = "__all__"
 class FormRetail(forms.ModelForm):
     class Meta:
         model=Retail
@@ -11,6 +16,7 @@ class FormShipping(forms.ModelForm):
     class Meta:
         model=ShippingAddress
         fields="__all__"
+        exclude = ["order"]
 
 #forms here
 class DateInput(forms.DateInput):

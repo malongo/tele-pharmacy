@@ -1,38 +1,6 @@
 {% extends 'base.html' %} {% load static %}{%load crispy_forms_tags%} {% block content %}
 <div class="row">
     <div class="col-lg-6">
-        <div class="box-element" id="form-wrapper">
-            <form id="form" action="{% url 'MedicineTrack:checkout' %}" method="POST">
-                <!-- <div id="user-info">
-                    <div class="form-field">
-                        <input required class="form-control" type="text" name="name" placeholder="Name..">
-                    </div>
-                    <div class="form-field">
-                        <input required class="form-control" type="email" name="email" placeholder="Email..">
-                    </div>
-                </div> -->
-
-                <div id="shipping-info">
-                    <hr>
-                    <p>Shipping Information:</p>
-                    <hr> {% csrf_token %} {{form|crispy}}
-
-                    <hr>
-                    <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
-                </div>
-            </form>
-        </div>
-
-        <br>
-        <div class="box-element hidden" id="payment-info">
-            <small>Paypal Options</small>
-            <!--<button id="make-payment">Make payment</button>-->
-            <div id="paypal-button-container"></div>
-        </div>
-
-    </div>
-
-    <div class="col-lg-6">
         <div class="box-element">
             <a class="btn btn-outline-dark" href="{% url 'MedicineTrack:cart' %}">&#x2190; Back to Cart</a>
             <hr>
@@ -53,11 +21,39 @@
             {% endfor %}
             <h5>Items: {{order.get_cart_items}}</h5>
             <h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
+
+
+
         </div>
+
     </div>
+
+
+
+    {% if order.get_cart_items >= 1%}
+    <div class="col-lg-6">
+        <div class="box-element" id="form-wrapper">
+            <form id="form" action="{% url 'MedicineTrack:payment' order.id %}" method="POST">
+
+                <div id="shipping-info">
+                    <hr>
+                    <p>Shipping Information:</p>
+                    <hr> {% csrf_token %} {{form|crispy}}
+
+                    <hr>
+                    <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+                </div>
+            </form>
+        </div>
+        {% endif %}
+        <br>
+
+
+    </div>
+
+
 </div>
 
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR-CLIENT-ID&currency=USD&disable-funding=credit"></script>
 
 <script>
     var total = '{{order.get_cart_total}}'

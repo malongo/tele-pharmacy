@@ -3,23 +3,21 @@
 
 <div class="container profile">
 
-    <div class="col-md-8 mx-auto overflow-scroll">
+    <div class="col-md-8 mx-auto ">
         <div class="card">
-            <div class="card-header bg-info text-white">
-                Profile Page
+            <div class="card-header bg-blue text-white">
+                <a class="btn navbar-link" href="{{request.META.HTTP_REFERER}}">&#x2190; back</a>
             </div>
 
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-8 mx-auto">
-
                         <form action="" method="post">
                             {% csrf_token%}
                             <!-- csrf_token -->
                             {{form.as_p}}
                             <input type="submit" value="Update">
                         </form>
-
                     </div>
 
                 </div>

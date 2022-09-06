@@ -1,0 +1,361 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #333;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+}
+
+:root {
+    --color-white: #fff;
+    --color-blue: rgb(102, 155, 235);
+    --color-gray: rgb(231, 233, 231);
+    --color-blue-gradient: rgba(102, 155, 235, 0.3);
+    --color-table-child: rgba(100, 70, 100, 0.1);
+}
+
+.flex_1 {
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    grid-area: title;
+    padding: 8px 2px;
+    color: var(--color-blue);
+}
+
+.date {
+    grid-area: date;
+    margin: 0px 12px;
+    padding: 8px 2px;
+    color: var(--color-blue);
+}
+
+.item h3 {
+    color: var(--color-blue);
+}
+
+.cart {
+    grid-area: cart;
+    background-color: var(--color-gray);
+}
+
+.navbar {
+    grid-area: navbar;
+    margin: auto;
+    width: 70%;
+}
+
+.grid {
+    display: grid;
+    grid-template-areas: 'title title date date cart cart' 'navbar navbar navbar navbar cart cart';
+}
+
+.grid .item {
+    border: 2px solid var(--color-blue-gradient);
+    text-align: center;
+}
+
+.header {
+    background-color: var(--color-gray);
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0px;
+    z-index: 1;
+}
+
+
+/* .container {
+    background-color: var(--color-blue);
+} */
+
+.content-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.content-wrapper {
+    border: 4px groove var(--color-blue);
+    flex: 1 1 200px;
+}
+
+.navbar-wrapper {
+    margin: 0px;
+    padding: 0px;
+}
+
+
+/* .navbar-wrapper .navbar-item {
+    display: inline-block;
+} */
+
+.navbar-wrapper .navbar-item {
+    flex: 1 2 auto;
+}
+
+.navbar-wrapper .navbar-item .navbar-link {
+    padding: 10px;
+    background-color: var(--color-white);
+    color: var(--color-blue);
+    border: 0.5px solid var(--color-blue);
+}
+
+.navbar-wrapper .navbar-item .navbar-link:hover {
+    background-color: var(--color-blue-gradient);
+    color: var(--color-white);
+}
+
+.navbar-link {
+    background-color: var(--color-white);
+    color: var(--color-blue);
+    border: 0.5px solid var(--color-blue-gradient);
+}
+
+.navbar-link {
+    background-color: var(--color-gray)
+}
+
+.profile-link:hover {
+    border: 3px solid var(--color-white);
+}
+
+
+/************************************************************************/
+
+
+/******************      TABLE     **************************************/
+
+thead {
+    background-color: var(--color-blue);
+}
+
+tbody tr {
+    background-color: var(--color-white);
+}
+
+tbody>tr:nth-child(even) {
+    background-color: var(--color-table-child);
+}
+
+
+/********************+++++++++++++++++++++++++++++*********************/
+
+
+/*********************++++++++++FORM STYLE+++++++++********************/
+
+
+/********************++++++++++++++++++++++++++++++*******************/
+
+.login,
+.register {
+    margin: auto;
+    width: 500px;
+    border-radius: 5px;
+    background-color: rgba(242, 242, 242, 0.6);
+    padding: 20px;
+}
+
+input[type=date],
+input[type=text],
+input[type=email],
+input[type=password],
+select {
+    width: 100%;
+    padding: 5px 8px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 100%;
+    background-color: var(--color-blue);
+    color: white;
+    padding: 5px 8px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=checkbox],
+input[type=file] {
+    margin: 12px 2px;
+}
+
+p {
+    border-bottom: 2px solid white;
+    margin: 0px;
+}
+
+p input[type=submit]:hover {
+    background-color: var(--color-blue-gradient);
+}
+
+form {
+    border-radius: 5px;
+    background-color: rgba(242, 242, 242, 0.6);
+    padding: 20px;
+}
+
+div {
+    padding: 0px;
+    margin: 0px;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+input[type="date"] {
+    background: transparent;
+    color: black;
+}
+
+.error-container {
+    background-color: var(--color-blue);
+    color: white;
+    text-align: center;
+    padding: 8px;
+    margin: 2px 8px;
+}
+
+
+/********************+++++++++++++++++++++++++++++*********************/
+
+
+/*********************++++++++++PROFILE STYLE+++++++++********************/
+
+
+/********************++++++++++++++++++++++++++++++*******************/
+
+.footer {
+    opacity: .9;
+    color: #fff;
+    padding: 50px 0;
+    width: 100%;
+    height: 80%;
+    background-color: teal;
+}
+
+.footer-col ul li {
+    list-style: none;
+}
+
+.footer-col ul li a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+}
+
+.footer-col ul li a:hover {
+    color: blue;
+    font-weight: bold;
+    transition: all 0.4s ease-out;
+}
+
+.footer-col h4::before {
+    content: '';
+    position: absolute;
+    height: 4px;
+    box-sizing: border-box;
+    width: 50px;
+}
+
+.pull-right ul li a {
+    text-decoration: none;
+    float: left;
+    display: block;
+    padding: 0px 0px;
+    margin: auto;
+}
+
+.pull-right ul li a:hover {
+    color: blue;
+}
+
+.social ul li a {
+    text-decoration: none;
+    float: left;
+    display: block;
+    padding: 0px 0px;
+    margin: auto;
+}
+
+
+/**********************    COLOR    *******************************/
+
+.bg-blue {
+    background-color: var(--color-blue);
+    color: var(--color-white);
+}
+
+
+/************************  SEARCH  ********************************/
+
+.search-fm input[type=text] {
+    float: right;
+    border: none;
+    font-size: 17px;
+    box-sizing: border-box;
+    width: 87%;
+    background-color: var(--color-blue-gradient);
+    color: var(--color-white);
+    margin: 0px;
+}
+
+.search-fm input[type=text]:focus {
+    border: none;
+}
+
+.search-fm button {
+    float: right;
+    padding: 4px;
+    background-color: var(--color-blue);
+    border: none;
+}
+
+.search-fm {
+    padding: 0px;
+    margin: 0px;
+}

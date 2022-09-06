@@ -1,177 +1,139 @@
 <!--Navbar-->
 {% load static %}
-<header>
-    <marquee behavior="alternate" direction="right">
-        <h3 class="my-4">TELE-PHARMACY</h3>
-    </marquee>
-</header>
-<nav class="navbar navbar-expand-md navbar-info bg-info sticky-top">
+<header class="header grid">
+    <div class="item title">
 
-    <div class="container">
+        <h3> <span><img src="{% static 'images/medicine3.png'%}" alt="" width="25" height="30"></span>TELE-PHARMACY</h3>
+    </div>
+    <div class="item date">
+        <h3>{% now "l, j F Y" %}</h3>
 
-        <!-- <a class="navbar-brand text-white bg-dark" href="{% url 'MedicineTrack:store' %}" ">Home</a>
-            <button class="navbar-toggler " type="button " data-toggle="collapse " data-target="#navbarSupportedContent " aria-controls="navbarSupportedContent " aria-expanded="false " aria-label="Toggle navigation ">
-                <span class="navbar-toggler-icon "></span>
-            </button> -->
+    </div>
+    <div class="item navbar row" style=" border: 2px solid var(--color-gray);">
+        <ul class="navbar-wrapper flex_1 ">
+            <li class="navbar-item ">
+                <a class="navbar-link" href="{% url 'MedicineTrack:store' %} ">
+                    <img src="{% static 'images/medicine1.png'%}" alt="" width="20" height="25"> Home </a>
 
-        <div class=" navbar-collapse " id="navbarSupportedContent ">
-            <ul class="navbar-nav mr-auto ">
-                <li class="nav-item active ">
-                    <a class="nav-link text-white " href="{% url 'MedicineTrack:store' %} ">Home <span
-                                class="sr-only ">(current)</span></a>
-                </li>
-                <li class="nav-item active ">
-                    <a class="nav-link text-white " href="{% url 'MedicineTrack:about' %} ">About Us <span
-                                class="sr-only ">(current)</span></a>
-                </li>
-                <li class="nav-item active ">
-                    <a class="nav-link text-white " href="{% url 'MedicineTrack:contact' %} ">Contact us <span
-                                class="sr-only ">(current)</span></a>
-                </li>
-                <li class="nav-item active ">
-                    <a class="nav-link text-white " href="{% url 'MedicineTrack:order' %} ">order <span
-                                class="sr-only ">(current)</span></a>
-                </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item active ">
-                    <a class="nav-link text-white " href="{% url 'MedicineTrack:statistics' %} ">statistics <span
-                                class="sr-only ">(current)</span></a>
-                </li>
-                {% endif %}
-            </ul>
+            </li>
+            <li class="navbar-item ">
+                <a class="navbar-link" href="{% url 'MedicineTrack:about' %} ">
+                    <img src="{% static 'images/portfolio.png'%}" alt="" width="20" height="25"> Portfolio </a>
 
-            <ul class="navbar-nav ml-auto ">
+            </li>
+            <li class="navbar-item ">
+                <a class="navbar-link" href="{% url 'MedicineTrack:contact' %} ">
+                    <img src="{% static 'images/conct1.webp'%}" alt="" width="20" height="25"> Contact us </a>
+
+            </li>
+            <li class="navbar-item ">
+                <a class="navbar-link" href="{% url 'MedicineTrack:order' %} ">
+                    <img src="{% static 'images/order.png'%}" alt="" width="20" height="25"> order </a>
+
+            </li>
+            {% if user.is_authenticated %}
+            <li class="navbar-item ">
+                <a class="navbar-link" href="{% url 'MedicineTrack:statistics' %} ">
+                    <img src="{% static 'images/stats.png'%}" alt="" width="20" height="25"> statistics </a>
+            </li>
+            {% endif %}
+        </ul>
+
+    </div>
+    <div class="item cart">
+
+        <div class="flex_1" style="background-color: var(--color-blue-gradient);">
+
+            <a href="{% url 'MedicineTrack:cart' %}" style="padding: 10px 2px;">
+                <img id="cart-icon" src="{% static 'images/cart.png' %}">
+            </a>
+            <p id="cart-total">{{cartMedicine}}</p>
+
+        </div>
+
+
+        <div class="item profile">
+            <ul class="navbar-wrapper flex_1">
                 <!-- USER AUTHENTICATION -->
                 {% if user.is_authenticated %}
-                <li class="nav-item active ">
-                    <button class="nav-link text-white rounded bg-primary border-0 " onclick="toggle_profile() ">{{user.username}}<span
-                                class="sr-only " id="profile_btn "></span></button>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link text-white " href=" {% url 'MedicineTrack:logout' %} ">Logout</a>
-                </li>
+                <div class="user-profile py-2">
+                    <p>
+                        <span><img src="{% static 'images/profile.png'%}" alt="" width="20" height="25"></span>
+                        <span>@{{user.username}}</span>
+                        <img onclick="toggle_profile() " id="profile_btn" src="{% static 'images/32195.png'%}" alt="" width="20px" height="20px">
+                    </p>
+                </div>
+                <div class="dropdown flex-column position-fixed " id="drop-down" style="display: none; top:100px;">
+                    <li class="navbar-item">
+                        <a class="navbar-link " href=" {% url 'MedicineTrack:profile'%} ">
+                            <img src="{% static 'images/profile.png'%}" alt="" width="20" height="25"> profile
+                        </a>
+                    </li>
+                    <li class="navbar-item">
+                        <a class="navbar-link " href=" {% url 'MedicineTrack:logout' %} ">
+                            <img src="{% static 'images/logout.png'%}" alt="" width="20" height="25"> Logout
+                        </a>
+                    </li>
+                </div>
+
                 {% else %}
                 <!--LOGIN-->
                 {%url 'MedicineTrack:login' as urls %} {% if request.path != urls %}
-                <li class="nav-item ">
-                    <a class="nav-link text-white " href=" {% url 'MedicineTrack:login' %} ">Login</a>
+                <li class="navbar-item">
+                    <a class="navbar-link  " href=" {% url 'MedicineTrack:login' %} ">
+                        <img src="{% static 'images/login.png'%}" alt="" width="20" height="25"> Login
+                    </a>
                 </li>
                 {% endif %}
                 <!--REGISTER-->
                 {%url 'MedicineTrack:register' as urls %} {% if request.path != urls %}
-                <li class="nav-item ">
-                    <a class="nav-link text-white " href=" {% url 'MedicineTrack:register' %} ">Register</a>
+                <li class="navbar-item ">
+                    <a class="navbar-link  " href=" {% url 'MedicineTrack:register' %} ">
+                        <img src="{% static 'images/register.png'%}" alt="" width="20" height="25"> Register
+                    </a>
                 </li>
                 {% endif %} {% endif %}
-                <div class="form-inline my-2 my-lg-0">
 
-                    <a href="{% url 'MedicineTrack:cart' %}">
-                        <img id="cart-icon" src="{% static 'images/cart.png' %}">
-                    </a>
-                    <p id="cart-total">{{cartMedicine}}</p>
-
-                </div>
             </ul>
-
         </div>
+
+        <form action="{% url 'MedicineTrack:store' %}" method="GET" class="search-fm">
+            <input type="text" placeholder="search" name="q">
+            <button type="submit"> <img id="cart-icon" src="{% static 'images/search.png' %}"></button>
+        </form>
+
+
     </div>
-</nav>
+
+
+</header>
 <!--
 PROFILE
 -->
 <!--Table-->
 
-<div class="container position-fixed " id="profile " style="display:none; z-index:1; ">
-    <div class=" row my-2 ">
-        <div class="col-md-4 ">
 
-        </div>
-
-        <div class="col-md-8 ">
-
-            <div class="card " style="overflow-y:scroll;height:370px; ">
-                <div class="card-header bg-info text-white ">
-                    {{user.username}} Profile
-                </div>
-                <div class="card-body ">
-                    <div class="row ">
-                        <div class="col-md-8 ">
-                            <span class="h4 "> Profile Information</span> <a class="btn btn-info btn-sm float-right " href="{% url 'MedicineTrack:update_profile' %} ">Edit</a>
-                            <hr>
-                            <table class="table bg-white table-borderless ">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row ">Name</th>
-                                        <td>{{user.username}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row ">Email</th>
-                                        <td>{{user.email}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row ">Phone 1</th>
-                                        <td>{{user.retail.PhoneNumber_1}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row ">Phone 2</th>
-                                        <td>{{user.retail.PhoneNumber_2}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row ">Country</th>
-                                        <td>{{user.retail.Country.name}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row ">City</th>
-                                        <td>{{user.retail.get_City_display}}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th scope="row ">Address</th>
-                                        <td>{{user.retail.Address}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row ">Organization Name</th>
-                                        <td>{{user.retail.OrganizationName}}</td>
-                                    </tr>
-
-
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <div class="col-md-4 ">
-                            <img class="img-thumbnail " src="{% static 'images/back1.webp'%} " alt=" ">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<!--End Table-->
 <script>
-    var profile_container = document.getElementById("profile ");
-    var btn_profile = document.getElementById("profile_btn ");
+    var btn_profile = document.getElementById("profile_btn");
+    var drop_down = document.getElementById("drop-down");
+
     var toggle = true;
+
 
     function toggle_profile() {
 
 
         if (toggle) {
-            profile_container.style.display = "block ";
+            btn_profile.src = "{% static 'images/271239.png' %}";
+            drop_down.style.display = "block";
+
             toggle = false;
-            btn_profile.innerHTML = " Close ";
+
         } else {
-            profile_container.style.display = "none ";
+            btn_profile.src = "{% static 'images/32195.png'%}";
+            drop_down.style.display = "none";
             toggle = true;
-            btn_profile.innerHTML = " {{user.username}} ";
         }
 
     }
 </script>
-<!--End Navbar-->

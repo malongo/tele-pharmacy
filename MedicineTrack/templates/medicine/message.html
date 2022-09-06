@@ -1,0 +1,19 @@
+{% extends 'base.html' %} {% load static %}{%load crispy_forms_tags%} {% block content %}
+<div class="container my-2">
+    <div class="mx-auto" style="width:50%">
+        <p class="bg-info ">
+            <a class="btn px-5 text-white" href="{{request.META.HTTP_REFERER}}">&#x2190; back</a>
+        </p>
+
+        <div>
+            {{message.message}}
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(() => {
+        // window.location.replace("{% url 'MedicineTrack:store' %}");
+        window.location.replace("{{request.META.HTTP_REFERER}}");
+    }, 3000)
+</script>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}{% load static %}{% block title %} statistics page {% endblock %} {% block content %}
+<div class="container ">
+    <div class=" row my-2 ">
+        <div class="col-md-4 ">
+
+        </div>
+
+        <div class="col-md-6 ">
+
+            <div class="card ">
+                <div class="card-header bg-blue">
+                    {{user.username}} Profile <a class="btn navbar-link" style="float: right;" href="{{request.META.HTTP_REFERER}}">&#x2190; back</a>
+                </div>
+                <div class="card-body ">
+                    <div class="row ">
+                        <div class="col-md-8 ">
+                            <span class="h4 "> Profile Information</span>
+                            <a class="btn navbar-link btn-sm float-right " href="{% url 'MedicineTrack:update_profile' %} ">
+                                <img src="{% static 'images/edit--v1.png'%}" alt="" width="20" height="20"> Edit
+                            </a>
+                            <hr>
+                            <table class="table bg-white table-borderless ">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row ">Name</th>
+                                        <td>{{user.username}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Email</th>
+                                        <td>{{user.email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Phone 1</th>
+                                        <td>{{user.retail.PhoneNumber_1}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Phone 2</th>
+                                        <td>{{user.retail.PhoneNumber_2}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Country</th>
+                                        <td>{{user.retail.Country.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">City</th>
+                                        <td>{{user.retail.get_City_display}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row ">Address</th>
+                                        <td>{{user.retail.Address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row ">Organization Name</th>
+                                        <td>{{user.retail.OrganizationName}}</td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="col-md-4 ">
+                            <img class="img-thumbnail " src="{% static 'images/back1.webp'%} " alt=" ">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
+<!--End Table-->
