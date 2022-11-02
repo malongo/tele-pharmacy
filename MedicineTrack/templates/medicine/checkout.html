@@ -1,58 +1,55 @@
-{% extends 'base.html' %} {% load static %}{%load crispy_forms_tags%} {% block content %}
-<div class="row">
-    <div class="col-lg-6">
-        <div class="box-element">
-            <a class="btn btn-outline-dark" href="{% url 'MedicineTrack:cart' %}">&#x2190; Back to Cart</a>
-            <hr>
-            <h3>Order Summary</h3>
-            <hr> {% for item in items %}
-            <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{{item.medicine.imageURL}}"></div>
-                <div style="flex:2">
-                    <p>{{item.medicine.name}}</p>
-                </div>
-                <div style="flex:1">
-                    <p>${{item.medicine.getPrice|floatformat:2}}</p>
-                </div>
-                <div style="flex:1">
-                    <p>x{{item.quantity}}</p>
-                </div>
-            </div>
-            {% endfor %}
-            <h5>Items: {{order.get_cart_items}}</h5>
-            <h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
+{% extends 'medicine/base.html' %} {% load static %}{%load crispy_forms_tags%}
+<!-- NAVIGATION -->
+{% block navigation %}
+<!--  -->
+{% include 'medicine/navigation.html'%}
+<!--  -->
+{% endblock %}
+<!-- END NAVIGATION -->
+{% block content %}
 
 
 
-        </div>
-
-    </div>
-
+<div class="row mx-2">
 
 
     {% if order.get_cart_items >= 1%}
-    <div class="col-lg-6">
-        <div class="box-element" id="form-wrapper">
-            <form id="form" action="{% url 'MedicineTrack:payment' order.id %}" method="POST">
-
-                <div id="shipping-info">
-                    <hr>
-                    <p>Shipping Information:</p>
-                    <hr> {% csrf_token %} {{form|crispy}}
-
-                    <hr>
-                    <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
-                </div>
-            </form>
+    <div class="col-lg-6 ">
+        <div class="container-wrapper bg-gray">
+            <h3 class="bg-purple text-align-center">
+                Shipping Information
+            </h3>
+            <div class="login ">
+                <form action="{% url 'MedicineTrack:payment' order.id %}" method="POST">
+                    {% csrf_token %} {{form.as_p}}
+                    <input type="submit" value="Continue" class="btn-submit">
+                </form>
+            </div>
         </div>
-        {% endif %}
-        <br>
-
-
+    </div>
+    {% endif %}
+    <div class="col-lg-6">
+        <!-- Video -->
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'images/shipping1.avif'%}" class="d-block w-100" alt="..." height="600px">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/shipping2.webp'%}" class="d-block w-100" alt="..." height="600px">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/shipping3.webp'%}" class="d-block w-100" alt="..." height="600px">
+                </div>
+            </div>
+        </div>
     </div>
 
 
 </div>
+
+
+
 
 
 <script>
@@ -177,3 +174,11 @@
     }
 </script>
 {% endblock content %}
+
+<!-- FOOTER -->
+{% block footer %}
+<!--  -->
+{% include 'medicine/footer.html'%}
+<!--  -->
+{% endblock %}
+<!-- END FOOTER -->

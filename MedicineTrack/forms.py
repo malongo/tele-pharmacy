@@ -1,4 +1,5 @@
 from dataclasses import field
+from urllib import request
 from django import forms
 from django.contrib.auth.models import User
 from .models import *
@@ -13,6 +14,7 @@ class FormRetail(forms.ModelForm):
         fields="__all__"
 
 class FormShipping(forms.ModelForm):
+    retail = forms.ModelChoiceField(queryset=Retail.objects.filter(id=1))
     class Meta:
         model=ShippingAddress
         fields="__all__"

@@ -1,0 +1,29 @@
+{% load static %}
+<!--  -->
+{% if recent_cart %}
+<!--  -->
+{% for recent_cart in recent_cart %}
+<div class="card bg-gray my-1" style="width: 20rem;">
+    <img src="{{recent_cart.medicine.imageURL}}" class="card-img-top" alt="..." width="150" height="180">
+    <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn-submit">shop now</a>
+    </div>
+</div>
+{% endfor %}
+<!--  -->
+{% else %}
+<!--  -->
+
+{% for new_medicine in new_medicine %}
+
+<div class="card bg-gray  my-1" style="width: 20rem;">
+    <img src="{{new_medicine.imageURL}}" class="card-img-top" alt="..." width="150" height="180">
+    <div class="card-body">
+        <h5 class="card-title">{{new_medicine.name}}</h5>
+        <p class="card-text my-1">{{new_medicine.description|slice:":50" }}</p>
+        <a href="#" class="btn-submit" class="my-2 p-4">shop now</a>
+    </div>
+</div>
+{% endfor %} {% endif %}

@@ -1,5 +1,13 @@
 <!--Table-->
-{% extends 'base.html' %} {% block title %} Retail Page {% endblock %} {% block content %}
+{% extends 'medicine/base.html' %} {% block title %} Retail Page {% endblock %}
+<!-- NAVIGATION -->
+{% block navigation %}
+<!--  -->
+{% include 'medicine/navigation.html'%}
+<!--  -->
+{% endblock %}
+<!-- END NAVIGATION -->
+{% block content %}
 
 <div class="container profile">
 
@@ -31,4 +39,12 @@
 
 {% endblock %}
 
-<!--End Table-->
+
+
+<!-- FOOTER -->
+{% block footer %}
+<!--  -->
+{% include 'medicine/footer.html'%}
+<!--  -->
+{% endblock %}
+<!-- END FOOTER -->

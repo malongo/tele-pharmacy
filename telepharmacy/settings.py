@@ -65,6 +65,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'MedicineTrack.contexts.order_cart',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -83,7 +84,7 @@ WSGI_APPLICATION = 'telepharmacy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'MedicineTrack',
+        'NAME': 'MedicineTrack2',
         'PASSWORD': 'Catherine@27', 
         'USER': 'postgres',
         'HOST': 'localhost',
@@ -127,9 +128,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'static')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR,'static')
+# ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 #create the urls and folders for the media
@@ -142,3 +143,13 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+}

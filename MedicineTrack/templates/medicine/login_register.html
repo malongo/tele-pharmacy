@@ -1,0 +1,51 @@
+{% extends 'medicine/base.html' %}{% load static %}{% block title %} login & register page {% endblock %}
+<!--  -->
+{% block content %}
+<div id="error_shopping" class="container">
+    {% include 'medicine/message.html' %}
+</div>
+<!-- LOGIN FORM -->
+{%url 'MedicineTrack:login' as urls %} {% if request.path == urls %}
+<div class="flex bg-clr-blue-gradient  height-div">
+
+    <div class="my-5 m-auto bg-clr-blue">
+        <img src="{% static 'images/login2.jpg' %}" alt="" class="bg-img">
+    </div>
+    <div class="login my-5 mx-auto">
+        <div class="text-align-center bg-clr-teal">
+            <h3 class="text-clr-white">TELE-PHARMACY</h3>
+        </div>
+        <form method="POST">
+            {% csrf_token %} {{form.as_p}}
+            <input type="submit" value="Login">
+        </form>
+        Don't have an account? <a href="{% url 'MedicineTrack:register' %}"><strong>register here</strong></a>!
+    </div>
+</div>
+
+
+{% endif %}
+
+<!-- REGISTRATION FORM -->
+{%url 'MedicineTrack:register' as urls %} {% if request.path == urls %}
+<div class="flex bg-clr-blue-gradient  height-div">
+
+    <div class="my-5 m-auto bg-clr-blue ">
+        <img src="{% static 'images/login2.jpg' %}" alt="" class="bg-img">
+    </div>
+    <div class="register my-5 mx-auto ">
+
+        <div class="text-align-center bg-clr-teal ">
+            <h3 class="text-clr-white">TELE-PHARMACY</h3>
+        </div>
+        <form method="POST">
+            {% csrf_token %} {{form.as_p}}
+
+            <input type="submit" value="Register">
+        </form>
+        have an account? <a href="{% url 'MedicineTrack:login' %}"><strong>login here</strong></a>
+    </div>
+</div>
+
+
+{% endif %} {% endblock %}

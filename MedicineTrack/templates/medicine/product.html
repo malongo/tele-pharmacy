@@ -1,0 +1,64 @@
+{% extends 'medicine/base.html' %} {% load static %}
+<!-- NAVIGATION -->
+{% block navigation %}
+<!--  -->
+{% include 'medicine/navigation.html'%}
+<!--  -->
+{% endblock %}
+<!-- END NAVIGATION -->
+{% block content %}
+<!-- PORTFOLIO & CATEGORIES -->
+<div class="grid grid-mobile">
+    <div class="main-content mx-2 bg-gray">
+        {% include 'medicine/categories.html' %}
+    </div>
+    <div class="main-content">
+        {% include 'medicine/portfolio_img.html' %}
+    </div>
+
+</div>
+<!--END  PORTFOLIO & CATEGORIES -->
+
+
+<main class="container-wrapper bg-white">
+
+
+    <div class="container-wrapper my-2 ">
+        <div class="container-wrapper bg-gray">
+            <h3 class="bg-purple text-align-center ">({{medicine.count}}) Available Medicine </h3>
+            <div class="grid-item text-clr-blue ">
+                {% for medicine in medicine %}
+                <div class="grid bg-gray my-1">
+                    <div class="medicine-img ">
+                        <img src="{{medicine.imageURL}}" alt=" " width="230px " height="250px ">
+                    </div>
+                    <div class="medicine-desc container-wrapper ">
+                        <h4>{{medicine.name}}</h4>
+                        <p>Tsh {{medicine.price}}</p>
+                        <a href=" " class="btn-submit ">shop now</a>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+
+    </div>
+</main>
+
+
+</div>
+
+
+
+<!--  -->
+
+{% endblock content %}
+<!-- FOOTER -->
+{% block footer %}
+<!--  -->
+{% include 'medicine/footer.html'%}
+<!--  -->
+{% endblock %}
+<!-- END FOOTER -->

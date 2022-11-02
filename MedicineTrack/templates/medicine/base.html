@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %} Tele Pharmacy {% endblock %}</title>
+    <style>
+        /************* DOCUMENT STYLE**************/
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.min.css'%}">
+    <!--FontAwesome CDN-->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico'%}">
+    <script type="text/javascript">
+        var user = '{{request.user}}';
+
+        function getToken(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getToken('csrftoken')
+    </script>
+    <style>
+        header {
+            background-color: wheat;
+            color: black;
+        }
+        
+        header marquee {
+            padding-top: 0px;
+            height: 50px;
+            white-space: nowrap;
+            /* Safari and Chrome  */
+            overflow-x: -webkit-marquee;
+            -webkit-marquee-direction: backwards;
+            -webkit-marquee-style: scroll;
+            -webkit-marquee-speed: slow;
+            -webkit-marquee-increment: small;
+            -webkit-marquee-repetition: infinite;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    {% block navigation %}
+    <!--  -->
+
+    <!--  -->
+    {% endblock %}
+
+    <div>
+        {% block content %} {% endblock %}
+    </div>
+    {% block footer %}
+    <!--  -->
+
+    <!--  -->
+    {% endblock %}
+
+    <script src="{% static 'js/carts.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+    <script>
+        document.getElementById('error-btn').addEventListener('click', () => {
+            document.getElementsByClassName('message-container')[0].style.display = "none";
+        })
+    </script>
+</body>
+
+</html>

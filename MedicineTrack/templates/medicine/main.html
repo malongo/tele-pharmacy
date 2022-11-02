@@ -1,0 +1,101 @@
+{% extends 'medicine/base.html' %} {% load static %}
+<!-- NAVIGATION -->
+{% block navigation %}
+<!--  -->
+{% include 'medicine/navigation.html'%}
+<!--  -->
+{% endblock %}
+<!-- END NAVIGATION -->
+{% block content %}
+<!-- PORTFOLIO & CATEGORIES -->
+<div id="error_shopping" class="container">
+    {% include 'medicine/message.html' %}
+</div>
+<div class="grid grid-mobile">
+    <div class="main-content mx-2 bg-gray">
+        {% include 'medicine/categories.html' %}
+    </div>
+    <div class="main-content">
+        {% include 'medicine/portfolio_img.html' %}
+    </div>
+
+</div>
+<!--END  PORTFOLIO & CATEGORIES -->
+<div class="grid-container grid-mobile my-2">
+    <div class="container-wrapper bg-white">
+        {% if recent_cart %}
+        <h3 class="bg-purple text-align-center">Recently</h3>
+        {% include 'medicine/recently.html' %}
+        <!--  -->
+        {% else %}
+        <h3 class="bg-purple text-align-center">New Product</h3>
+        {% include 'medicine/recently.html' %}
+        <!--  -->
+        {% endif %}
+    </div>
+
+    <main class="container-wrapper bg-white">
+
+        <div class="container-wrapper">
+            <div class="container-wrapper bg-gray">
+                <h3 class="bg-purple text-align-center">Best Selling</h3>
+                <div class="row">
+                    <!-- ITEMS -->
+                    {% for best_sell in best_sell %}
+                    <div class="col-4 bg-gray my-1" style="width:340px;">
+                        <div class=" medicine-img tex-align-center">
+                            <img src="{{best_sell.medicine.imageURL}}" alt=" " width="250px " height="250px ">
+                        </div>
+                        <div class="medicine-desc container-wrapper ">
+                            <h4>{{best_sell.medicine.name}}</h4>
+                            <p>Tsh {{best_sell.medicine.getPrice}}</p>
+                            <a href="{% url 'MedicineTrack:shopping' best_sell.medicine.id %}" class="btn-submit">shop now</a>
+                        </div>
+                    </div>
+                    <!-- ITEMS -->
+                    {% endfor %}
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="container-wrapper my-2 ">
+            <div class="container-wrapper bg-gray">
+                <h3 class="bg-purple text-align-center ">Low Price Product</h3>
+                <div class="row flex-shopping text-clr-blue ">
+                    {% for feature_product in feature_product %}
+                    <div class="col-4 bg-gray my-1">
+                        <div class="medicine-img tex-align-center">
+                            <img src="{{feature_product.medicine.imageURL}}" alt=" " width="280px " height="250px ">
+                        </div>
+                        <div class="medicine-desc container-wrapper ">
+                            <h4>{{feature_product.medicine.name}}</h4>
+                            <p>Tsh {{feature_product.price}}</p>
+                            <a href="{% url 'MedicineTrack:shopping' feature_product.medicine.id %} " class="btn-submit ">shop now</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+
+        </div>
+    </main>
+
+
+</div>
+
+
+
+<!--  -->
+
+{% endblock content %}
+<!-- FOOTER -->
+{% block footer %}
+<!--  -->
+{% include 'medicine/footer.html'%}
+<!--  -->
+{% endblock %}
+<!-- END FOOTER -->

@@ -1,4 +1,12 @@
-{% extends 'base.html' %} {% load static %}{%load crispy_forms_tags%} {% block content %}
+{% extends 'medicine/base.html' %} {% load static %}{%load crispy_forms_tags%}
+<!-- NAVIGATION -->
+{% block navigation %}
+<!--  -->
+{% include 'medicine/navigation.html'%}
+<!--  -->
+{% endblock %}
+<!-- END NAVIGATION -->
+{% block content %}
 
 <!-- content -->
 <div class="container">
@@ -17,3 +25,10 @@
 </div>
 
 {% endblock %}
+<!-- FOOTER -->
+{% block footer %}
+<!--  -->
+{% include 'medicine/footer.html'%}
+<!--  -->
+{% endblock %}
+<!-- END FOOTER -->

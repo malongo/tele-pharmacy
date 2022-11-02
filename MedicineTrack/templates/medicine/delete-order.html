@@ -1,4 +1,12 @@
-{% extends 'base.html' %} {% load static %}{%load crispy_forms_tags%} {% block content %}
+{% extends 'medicine/base.html' %} {% load static %}{%load crispy_forms_tags%}
+<!-- NAVIGATION -->
+{% block navigation %}
+<!--  -->
+{% include 'medicine/navigation.html'%}
+<!--  -->
+{% endblock %}
+<!-- END NAVIGATION -->
+{% block content %}
 <div class="container my-2">
     <div class="mx-auto" style="width:50%">
         <p class="bg-info ">
@@ -22,3 +30,11 @@
     </div>
 </div>
 {% endblock %}
+
+<!-- FOOTER -->
+{% block footer %}
+<!--  -->
+{% include 'medicine/footer.html'%}
+<!--  -->
+{% endblock %}
+<!-- END FOOTER -->

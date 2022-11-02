@@ -1,4 +1,12 @@
-{% extends 'base.html' %}{% load static %}{% block title %} payment page {% endblock %} {% block content %}
+{% extends 'medicine/base.html' %}{% load static %}{% block title %} payment page {% endblock %}
+<!-- NAVIGATION -->
+{% block navigation %}
+<!--  -->
+{% include 'medicine/navigation.html'%}
+<!--  -->
+{% endblock %}
+<!-- END NAVIGATION -->
+{% block content %}
 <div class="row">
     <div class="col-lg-6">
         <div class="box-element">
@@ -53,3 +61,11 @@
 
 
 {% endblock content %}
+
+<!-- FOOTER -->
+{% block footer %}
+<!--  -->
+{% include 'medicine/footer.html'%}
+<!--  -->
+{% endblock %}
+<!-- END FOOTER -->

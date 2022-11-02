@@ -1,4 +1,12 @@
-{% extends 'base.html' %}{% load static %}{% block title %} statistics page {% endblock %} {% block content %}
+{% extends 'medicine/base.html' %}{% load static %}{% block title %} statistics page {% endblock %}
+<!-- NAVIGATION -->
+{% block navigation %}
+<!--  -->
+{% include 'medicine/navigation.html'%}
+<!--  -->
+{% endblock %}
+<!-- END NAVIGATION -->
+{% block content %}
 <div class="container ">
     <div class=" row my-2 ">
         <div class="col-md-4 ">
@@ -75,3 +83,10 @@
 
 {% endblock %}
 <!--End Table-->
+<!-- FOOTER -->
+{% block footer %}
+<!--  -->
+{% include 'medicine/footer.html'%}
+<!--  -->
+{% endblock %}
+<!-- END FOOTER -->

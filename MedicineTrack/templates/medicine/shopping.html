@@ -1,0 +1,208 @@
+{% extends 'medicine/base.html' %} {% load static %}
+<!-- NAVIGATION -->
+
+<!--  -->
+{% block navigation %}
+<!--  -->
+{% include 'medicine/navigation.html'%}
+<!--  -->
+{% endblock %}
+<!-- END NAVIGATION -->
+{% block content %}
+
+<div id="error_shopping" class="container">
+    {% include 'medicine/message.html' %}
+</div>
+<main class="container-wrapper bg-white">
+    <div class="flex-shopping  bg-gray my-1">
+
+        <div class="flex-shopping  item1 bg-white">
+            {% for medicine_photo in medicine_photo %}
+            <div class=" flex-shopping my-1">
+
+                <img src="{{medicine_photo.photo.url}}" alt="" onclick="change_image('{{medicine_photo.photo.url}}')">
+
+            </div>
+
+            {% endfor %}
+        </div>
+        <div class="container-wrapper item2 bg-white">
+            <img src="{{medicine.imageURL}}" alt=" " id="shopping-img">
+        </div>
+        <div class=" container-wrapper item3">
+            <h3 class="bg-purple text-align-center ">({{medicine_photo.count}}) Available Medicine Photo </h3>
+
+            <h4 class="bg-gray">{{medicine.name}}</h4>
+            <h5 class="bg-gray"> {{medicine.getPrice}} @Tsh</h5>
+            <h5 class="bg-gray">Total Price, Tsh <span id="total-price" data-price="{{medicine.getPrice}}">{{medicine.getPrice}}</span></h5>
+            <div class="flex-shopping bg-gray">
+                <h4> Quantity:</h4>
+                <button class="btn-shopping" id="add" data-action="add">+</button>
+                <input type="text" class="input-shopping" id="medicine_number" oninput="medicine_qty()" onemptied="">
+                <button class="btn-shopping" id="remove" data-action="remove">-</button>
+            </div>
+            <div class="container-wrapper bg-white my-4">
+                <div class="bg-gray flex">
+                    <button class="cat-link btn-2-shop" id="addCart" data-medicine="{{medicine.id}}" data-action="add">Add To Cart</button>
+                    <a href="{{request.META.HTTP_REFERER}}" class="cat-link btn-2-shop">&#x2190;Back</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        var change_image = (image_url) => {
+            document.getElementById("shopping-img").src = image_url;
+        }
+        var medicine_number = document.getElementById("medicine_number");
+        var total_price = document.getElementById("total-price");
+        var updateBtn = document.getElementsByClassName("btn-shopping");
+
+        for (i = 0; i < updateBtn.length; i++) {
+            updateBtn[i].addEventListener("click", function() {
+
+                var action = this.dataset.action;
+
+                if (action == "add") {
+
+                    var medicine_num = Number(medicine_number.value);
+                    medicine_num += 1;
+                    medicine_number.value = medicine_num;
+                    total_price.innerHTML = total_price.dataset.price * Number(medicine_number.value).toFixed(2);
+                } else if (action == "remove") {
+
+                    var medicine_num = Number(medicine_number.value);
+                    medicine_num -= 1;
+                    medicine_number.value = medicine_num;
+                    total_price.innerHTML = (total_price.dataset.price * Number(medicine_number.value)).toFixed(2);
+                }
+
+            });
+        }
+
+        var medicine_qty = () => {
+
+            var medicine_num = Number(medicine_number.value);
+            medicine_num -= 1;
+            medicine_number.value = medicine_num;
+            total_price.innerHTML = (total_price.dataset.price * Number(medicine_number.value)).toFixed(2)
+        }
+
+        var set_qty_default = () => {
+            medicine_number.value = 1;
+            var medicine_num = Number(medicine_number.value);
+            medicine_number.value = medicine_num;
+        }
+
+        var add_to_cart = document.getElementById("addCart");
+        add_to_cart.addEventListener('click', () => {
+            var action = add_to_cart.dataset.action;
+            var medicineId = add_to_cart.dataset.medicine;
+            var medicineQt = Number(medicine_number.value);
+
+            //  var super_user = "{{request.user.is_superuser}}"
+            if (medicineQt >= 1) {
+                if (user == "AnonymousUser") {
+                    document.getElementById('error_shopping').innerHTML = `
+                  <div class="alert alert-info">
+                    <div class="text-align-center bg-clr-teal flex">
+                        <h3 class="text-clr-white">LOGIN OR CREATE ACCOUNT </h3>
+                        <a href="{{request.META.HTTP_REFERER}}" class="cat-link btn-2-shop">&#x2190;Back</a>
+                    </div>
+                    <div class="login my-5 mx-auto bg-purple">
+
+                        <div class="text-align-center bg-clr-teal">
+                            <h3 class="text-clr-white">TELE-PHARMACY</h3>
+                        </div>
+                        <form method="POST" action="{% url 'MedicineTrack:login' %}">
+                            {% csrf_token %} {{form.as_p}}
+                            <input type="submit" value="Login">
+                        </form>
+                        Don't have an account? <a href="{% url 'MedicineTrack:register' %}"><strong>register here</strong></a>!
+                    </div>
+                    
+                  </div>
+                    `
+                        //location.replace("/login");
+                        // addCookieItem(medicineId, action);
+                } else if (false) {
+                    setTimeout(() => {
+                        location.reload()
+                    }, 4000)
+                    document.getElementById('error_shopping').innerHTML = `
+                    <div class="alert alert-info">
+                    <h3 class="m-3 text-info ">sorry @{{user.username}} currently we don't have this service for you 
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="border:none; float:right" id="Close">
+                            <span aria-hidden="true">
+                              <img src="{% static 'images/icons/x w-3.png'%}" alt="" width="20" height="20"> 
+                            </span>
+                          </button>
+                    </h3>
+                </div>
+                    `
+                } else {
+                    updateUserOrder(medicineId, action, medicineQt);
+                }
+            } else {
+                setTimeout(() => {
+                    location.reload()
+                }, 2000)
+                document.getElementById('error_shopping').innerHTML = `
+                <div class="alert alert-info">
+                <h3 class="m-3 text-info "> @{{user.username}} Your Not Specify Quantity
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="border:none; float:right" id="Close">
+                        <span aria-hidden="true">
+                          <img src="{% static 'images/icons/x w-3.png'%}" alt="" width="20" height="20"> 
+                        </span>
+                      </button>
+                </h3>
+            </div>
+                `
+            }
+
+        })
+
+        function updateUserOrder(medicineId, action, medicineQt) {
+            var url = "/update_item/";
+            fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrftoken
+                    },
+                    body: JSON.stringify({
+                        medicineId: medicineId,
+                        action: action,
+                        medicineQt: medicineQt,
+                    })
+                })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    // alert(data + " " + medicineQt);
+                    location.reload();
+
+                });
+        }
+    </script>
+
+</main>
+
+
+</div>
+
+
+
+<!--  -->
+
+{% endblock content %}
+<!-- FOOTER -->
+{% block footer %}
+<!--  -->
+{% include 'medicine/footer.html'%}
+<!--  -->
+{% endblock %}
+<!-- END FOOTER -->

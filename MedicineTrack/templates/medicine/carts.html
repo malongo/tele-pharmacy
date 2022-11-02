@@ -1,67 +1,106 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'medicine/base.html' %} {% load static %}
+<!-- NAVIGATION -->
+{% block navigation %}
+<!--  -->
+{% include 'medicine/navigation.html'%}
+<!--  -->
+{% endblock %}
+<!-- END NAVIGATION -->
+{% block content %}
+<div id="error_shopping" class="container">
+    {% include 'medicine/message.html' %}
+</div>
+<!-- CHECK IF THERE IS MEDICINE -->
+{% if cartMedicine %}
+<div class="grid-cart grid-mobile-cart">
+    <div class="container-wrapper m-3 bg-gray">
+        <h3 class="text-align-center bg-purple">Shopping Cart</h3>
+        <!-- ITEMS -->
+        {% for item in items %}
+        <div class="grid">
 
-<div class="row mx-2">
-    <div class="col-lg-12">
-        <div class="box-element">
-            <!--store-->
-            <a class="btn navbar-link" href="{% url 'MedicineTrack:store' %}">&#x2190; Continue Shopping</a>
+            <div class="container-wrapper bg-gray-1">
+                <img src="{{item.medicine.imageURL}}" alt="" width="220" height="180">
+                <div class="flex_page">
+                    <img src="{% static 'images/icons/x w-3.png'%}" alt="" width="20" height="20" class="btn-cart-real" data-medicine="{{item.medicine.id}}" data-action="removeAll">
+                    <p>Remove</p>
+                </div>
+                <h5 class="bg-gray-1 my-2"> {{item.medicine.getPrice}} @Tsh</h5>
+            </div>
+            <div class=" container-wrapper item3">
+                <h4 class="bg-gray">{{item.medicine.name}}</h4>
+                <h5 class="bg-gray">Total Items: <span data-item="{{item.quantity}}" id="total-item">{{item.quantity}}</span> </h5>
+                <h5 class="bg-gray">Total Price, Tsh <span id="total-price" data-price="{{item.medicine.getPrice}}">{{item.get_total|floatformat:2}}</span></h5>
+                <div class="flex-shopping bg-gray">
+                    <h4> Quantity:</h4>
+                    <button class="btn-cart btn-shopping" id="add" data-action="add">+</button>
+                    <input type="text" class="input-shopping" id="medicine_number" oninput="medicine_qty()">
+                    <button class="btn-cart btn-shopping" id="remove" data-action="remove">-</button>
+                </div>
+                <div class="container-wrapper bg-white my-4">
+                    <div class="bg-gray flex">
+                        <button class="cat-link btn-2-shop btn-cart-real" data-medicine="{{item.medicine.id}}" data-action="addCart">Add To Cart</button>
+                        <button class="cat-link btn-2-shop btn-cart-real" data-medicine="{{item.medicine.id}}" data-action="removeCart">Remove From Cart</button>
+                        <a href="{{request.META.HTTP_REFERER}}" class="cat-link btn-2-shop">&#x2190;Back</a>
+                    </div>
 
-            <br>
-            <br>
-            <table class="table">
-                <tr>
-                    <th>
-                        <h5>Items: <strong>{{order.get_cart_items}}</strong></h5>
-                    </th>
-                    <th>
-                        <h5>Total:<strong> ${{order.get_cart_total|floatformat:2}}</strong></h5>
-                    </th>
-                    <th>
-                        <!--checkout-->
-                        <a style="float:right; margin:5px;" class="btn navbar-link" href="{% url 'MedicineTrack:checkout' %}">Checkout</a>
-                    </th>
-                </tr>
-            </table>
+                </div>
+            </div>
+        </div>
+        <hr> {% endfor %}
+        <input type="submit" value="Save " class="btn-submit">
+
+    </div>
+    <div class="container-wrapper m-3 ">
+        <h3 class="text-align-center bg-purple">Order Summary</h3>
+
+        <div class="container-wrapper bg-gray">
+            <div class="flex">
+                <h4>Item:</h4>
+                <h4>{{order.get_cart_items}}</h4>
+
+            </div>
+            <div class="flex">
+                <h4>Sub Total:</h4>
+                <h4>${{order.get_cart_total|floatformat:2}}</h4>
+
+            </div>
+            <div class="flex">
+                <h4>Shipping Cost:</h4>
+                <h4>$5</h4>
+
+            </div>
+            <hr>
+            <div class="flex">
+                <h3>Total Cost:</h3>
+                <h3>${{order.get_cart_total|floatformat:2}}</h3>
+
+            </div>
+            <hr>
 
         </div>
 
-        <br>
-        <div class="box-element">
-            <div class="cart-row">
-                <div style="flex:2"></div>
-                <div style="flex:2"><strong>Item</strong></div>
-                <div style="flex:1"><strong>Price</strong></div>
-                <div style="flex:1"><strong>Quantity</strong></div>
-                <div style="flex:1"><strong>Total</strong></div>
-            </div>
-            {% for item in items %}
-            <div class="cart-row">
-                <div style="flex:2"><img class="row-image" style="height:40px; width:50px;" src="{{item.medicine.imageURL}}"></div>
-                <div style="flex:2">
-                    <p>{{item.medicine.name}}</p>
-                </div>
+        <div class="flex_page bg-gray">
+            <a class="btn-submit" href="{% url 'MedicineTrack:store' %}">Continue Shopping</a>
+            <a style="float:right; margin:5px;" class="btn-submit" href="{% url 'MedicineTrack:checkout' %}">Checkout</a>
 
-                <div style="flex:1">
-
-                    <p>${{item.medicine.getPrice |floatformat:2}}</p>
-
-                </div>
-
-                <div style="flex:1">
-                    <p class="quantity">{{item.quantity}}</p>
-                    <div class="quantity">
-                        <img data-medicine="{{item.medicine.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
-
-                        <img data-medicine="{{item.medicine.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
-                    </div>
-                </div>
-                <div style="flex:1">
-                    <p>${{item.get_total|floatformat:2}}</p>
-                </div>
-            </div>
-            {% endfor %}
+        </div>
+        <div class="container-wrapper bg-gray">
+            <h3>Payment</h3>
         </div>
     </div>
-</div>
 
-{% endblock content %}
+
+</div>
+{% else %}
+<div class="container bg-gray">
+    <h2>empty</h2>
+</div>
+{% endif %} {% endblock content %}
+<!-- FOOTER -->
+{% block footer %}
+<!--  -->
+{% include 'medicine/footer.html'%}
+<!--  -->
+{% endblock %}
+<!-- END FOOTER -->

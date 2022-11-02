@@ -1,11 +1,12 @@
 from django.db import models
 from django_countries.fields import CountryField
 from django.contrib.auth.models import User 
+import random
 # Create your models here.
 
 class Status(models.Model):
     status_name = models.CharField(default = True, unique = True, max_length = 100)
-    status = models.BooleanField()
+    status = models.BooleanField(default=False)
     
     def __str__(self):
         return self.status_name
@@ -13,20 +14,24 @@ class Status(models.Model):
 class Medicine(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=400)
-    photo =  models.ImageField("Medicine photo",upload_to = 'pics/', null = True)
     status = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at =models.DateTimeField(auto_now=True)
     
-    
+
     def __str__(self):
         return str(self.name)
     
     @property
     def imageURL(self):
-        try:
-            url = self.photo.url
-        except:
-            url = ''
-        return url
+        medicine_photo = self.medicinephoto_set.all()
+        for photo in medicine_photo:
+            #random.randrange(1,4,1)
+            try:
+                url = photo.photo.url
+            except:
+                url = ''
+            return url
     
     @property
     def getPrice(self):
@@ -34,15 +39,22 @@ class Medicine(models.Model):
         return medicinePrice.price
 
 class MedicinePrice(models.Model):
-    medicine_id = models.ForeignKey(Medicine, on_delete = models.CASCADE)
+    medicine = models.ForeignKey(Medicine, on_delete = models.CASCADE)
     price = models.FloatField()
     status = models.BooleanField()
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     
     def __str__(self):
-        return self.medicine_id.name + ": " + str(self.price) + "$"
-
+        return self.medicine.name + ": " + str(self.price) + "$"
+    
+    
+class MedicinePhoto(models.Model):
+    medicine = models.ForeignKey(Medicine, on_delete = models.CASCADE)
+    photo =  models.ImageField("Medicine photo",upload_to = 'pics/', null = True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+    
 class Retail(models.Model):
     CITIES = (
         ('Ars','Arusha'),
@@ -61,14 +73,14 @@ class Retail(models.Model):
     )
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    PhoneNumber_1 = models.CharField(max_length = 15,) 
+    PhoneNumber_1 = models.CharField(max_length = 15, null=True) 
     PhoneNumber_2 = models.CharField(max_length = 15, null = True)
     Country = CountryField(null=False)
     City = models.CharField(max_length = 3, choices = CITIES,)
     Address = models.CharField(max_length = 254,)
     RetailEmail = models.EmailField(max_length = 254,)
     OrganizationName = models.CharField(max_length = 254)
-    Status = models.BooleanField(default = True)
+    status = models.BooleanField(default = True)
 
     def __str__ (self):
         return self.user.username 
@@ -76,7 +88,7 @@ class Retail(models.Model):
 class Order(models.Model):
     retail = models.ForeignKey(Retail,on_delete=models.CASCADE)
     order_date = models.DateTimeField(auto_now_add=True)
-    order_status = models.ForeignKey(Status, on_delete=models.SET_DEFAULT,default=True)
+    order_status = models.BooleanField(default=False)
     complete = models.BooleanField(default=False) #allow to see if order complete or not
     
     def __str__(self):
@@ -100,15 +112,31 @@ class Order(models.Model):
 
     @property
     def get_cart_items(self):
-        orderitems = self.ordermedicine_set.all()
+        orderitems = OrderMedicine.objects.filter(order__id = self.id)
         total = sum([item.quantity for item in orderitems])
+        # total = orderitems.count()
         return total 
-      
+    
+    @property
+    def get_status(self):
+        order_status = Status.objects.get(orderstatus__order__id = self.id)
+        print(order_status)
+        return order_status.status_name
+       
+       
+class OrderStatus(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE) 
+    status_name = models.ForeignKey(Status, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
+    status_date = models.DateTimeField(auto_now_add=True)
+    
 class OrderMedicine(models.Model):
     order = models.ForeignKey(Order, on_delete = models.CASCADE)
     medicine = models.ForeignKey(Medicine,  on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     total_price = models.FloatField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
       
     def __str__(self):
         return str(self.order) + " " + str(self.medicine)

@@ -1,95 +1,145 @@
-{% extends 'base.html' %}{% load static %}{% block title %} statistics page {% endblock %} {% block content %}
+{% extends 'medicine/base.html' %}{% load static %}{% block title %} statistics page {% endblock %}
+<!-- NAVIGATION -->
+{% block navigation %}
+<!--  -->
+{% include 'medicine/navigation.html'%}
+<!--  -->
+{% endblock %}
+<!-- END NAVIGATION -->
+{% block content %}
 <!--Chartjs CDN-->
 
 <script src="{% static 'node_modules/chart.js/dist/chart.min.js' %}"></script>
 <!--Graphs-->
-<div class="container">
-    <div class="row my-5">
-        <div class="col-md-6">
-            <div class="bg-white">
+<div class="container ">
+    <div class="row my-5 bg-gray-1">
+        <div class="col-md-6 bg-gray-1">
+            <div class=" bg-white">
                 <canvas id="myChart1" width="400" height="300"></canvas>
                 <script>
-                    var ctx = document.getElementById('myChart1').getContext('2d');
-                    var myChart1 = new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                            labels: ['red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                            datasets: [{
-                                label: 'Products',
-                                data: [12, 19, 3, 5, 2, 3],
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
-                                    }
-                                }]
-                            }
+                    getData();
+
+                    async function getData() {
+                        const response = await fetch(
+                            '/get-medicine/');
+                        console.log(response);
+                        const data = await response.json();
+                        console.log(data);
+                        length = data.length;
+                        console.log(length);
+
+                        labels = [];
+                        values = [];
+                        for (i = 0; i < length; i++) {
+                            labels.push(data[i].medicine);
+                            values.push(data[i].quantity);
                         }
-                    });
+
+
+
+                        var ctx = document.getElementById('myChart1').getContext('2d');
+
+                        var myChart1 = new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Products',
+                                    data: values,
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    }
                 </script>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 bg-gray-1">
             <div class="bg-white">
                 <canvas id="myChart" width="400" height="300"></canvas>
                 <script>
-                    var ctx = document.getElementById('myChart').getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ['red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                            datasets: [{
-                                label: 'Products',
-                                data: [12, 19, 3, 5, 2, 3],
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
-                                    }
-                                }]
-                            }
+                    getData();
+
+                    async function getData() {
+                        const response = await fetch(
+                            '/get-medicine/');
+                        console.log(response);
+                        const data = await response.json();
+                        console.log(data);
+                        length = data.length;
+                        console.log(length);
+
+                        labels = [];
+                        values = [];
+                        for (i = 0; i < length; i++) {
+                            labels.push(data[i].medicine);
+                            values.push(data[i].quantity);
                         }
-                    });
+
+
+                        var ctx = document.getElementById('myChart').getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Products',
+                                    data: values,
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    }
                 </script>
 
 
@@ -101,3 +151,11 @@
 
 
 {% endblock %}
+
+<!-- FOOTER -->
+{% block footer %}
+<!--  -->
+{% include 'medicine/footer.html'%}
+<!--  -->
+{% endblock %}
+<!-- END FOOTER -->
