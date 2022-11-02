@@ -6,7 +6,7 @@
         <!-- FIRST PARAGRAPH -->
 
         <!-- SEARCH PARAGRAPH -->
-        <div class="wrapper-search flex">
+        <!-- <div class="wrapper-search flex">
             <div class="right-wrapper">
                 <h2 class="text-clr-white">TELE-PHARMA</h2>
                 <h5 class="text-clr-white"><img src="/static/images/icons/tanzania flag.jpg" alt="" width="20" height="15">Tanzania Trusted Online Pharmacy</h5>
@@ -48,7 +48,7 @@
                     </div>
                     {% else %}
                     <!--LOGIN-->
-                    {%url 'MedicineTrack:login' as urls %} {% if request.path != urls %}
+        <!-- {%url 'MedicineTrack:login' as urls %} {% if request.path != urls %}
                     <li>
                         <a href="{% url 'MedicineTrack:login' %}" class="nav-link">
                             <img src="{% static 'images/login.png'%}" alt="" width="20" height="25">Sign In
@@ -57,7 +57,7 @@
                     <li class="nav-border"></li>
                     {% endif %}
                     <!--REGISTER-->
-                    {%url 'MedicineTrack:register' as urls %} {% if request.path != urls %}
+        <!-- {%url 'MedicineTrack:register' as urls %} {% if request.path != urls %}
                     <li>
                         <a href="{% url 'MedicineTrack:register' %}" class="nav-link">
                             <img src="{% static 'images/register.png'%}" alt="" width="20" height="25">Register
@@ -68,109 +68,8 @@
                 </ul>
             </div>
 
-        </div>
-        <div class="navbar-wrapper flex">
-            <div class="hide">
-                <img class="hide-img" src="{% static 'images/icons/3 line-w.png' %}" alt="" width="40" height="35">
-            </div>
-            <div class="left-wrapper">
-                <div class="wrapper-content flex">
-                    <h3 class="text-clr-white">Customer Service<img src="{% static 'images/icons/down arrow-w.png' %}" alt="" width="20" height="20">
-                        <div class="dropdown-menu bg-gray-1" style="width:20rem">
-                            <div class="bg-white">
-                                <ul class="nav_link_drop ">
-                                    <li>
-                                        <a href="" class="cat-link ">FAQ'S</a>
-                                    </li>
-                                    <li>
-                                        <a href="" class="cat-link ">Contact Info</a>
-                                    </li>
-                                    <li>
-                                        <a href="" class="cat-link ">How It Work</a>
-                                    </li>
-                                    <li>
-                                        <a href="" class="cat-link ">Our Story</a>
-                                    </li>
-                                    <li>
-                                        <a href="" class="cat-link ">Give Us Feedback</a>
-                                    </li>
+        </div> -->
 
-                                </ul>
-                                <h5><img src="" alt="">1-800-748-7001</h5>
-                                <h5><img src="" alt="">1-888-870-2808</h5>
-                            </div>
-
-                        </div>
-                    </h3>
-
-
-                </div>
-            </div>
-
-            <div class="right-wrapper show">
-                <nav class="nav-mobile">
-                    <ul class="flex">
-                        <li>
-                            <a href="{% url 'MedicineTrack:store' %} " class="nav_link">
-                                <img src="{% static 'images/icons/medicine3.png' %}" alt="" width="20" height="15"> Pharmacy
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'MedicineTrack:contact' %}" class="nav_link">
-                                <img src="{% static 'images/icons/conct1.webp' %}" alt="" width="20" height="15"> Contact Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'MedicineTrack:about' %}" class="nav_link">
-                                <img src="{% static 'images/icons/portfolio.png' %}" alt="" width="20" height="15">PortFolio
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'MedicineTrack:statistics' %}" class="nav_link">
-                                <img src="{% static 'images/icons/stats.png' %}" alt="" width="20" height="15">Statistics
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'MedicineTrack:order' %}" class="nav_link">
-                                <img src="{% static 'images/icons/order.png' %}" alt="" width="20" height="15">Order
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'MedicineTrack:product' %}" class="nav_link">
-                                <img src="{% static 'images/icons/product.png' %}" alt="" width="20" height="15">Product
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <script>
-                var toggle = true;
-                var hide = document.getElementsByClassName("hide")[0].addEventListener('click', () => {
-                    if (toggle) {
-                        document.getElementsByClassName("show")[0].style.display = "none";
-                        toggle = !toggle;
-                        document.getElementsByClassName('hide-img')[0].src = '/static/images/icons/x w-3.png'
-                    } else {
-                        document.getElementsByClassName("show")[0].style.display = "block";
-                        toggle = !toggle;
-                        document.getElementsByClassName('hide-img')[0].src = '/static/images/icons/3 line-w.png'
-                    }
-
-                })
-            </script>
-            <div class="left-wrapper">
-                <div class="cart flex bg-clr-blue">
-                    <div class="cart-img">
-                        <a href="{% url 'MedicineTrack:cart' %}">
-                            <img src="{% static 'images/icons/cart3.png' %}" alt="" width="70" height="55">
-                            <p id="cart-total" style="background-color:var(--color-teal) ;">{{cartMedicine}}</p>
-                        </a>
-                    </div>
-
-                    <!-- <h3>Cart</h3> -->
-                </div>
-            </div>
-        </div>
     </div>
 
 </nav>

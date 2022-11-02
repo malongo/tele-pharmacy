@@ -1,0 +1,57 @@
+<!-- LOAD STATIC TAG -->
+{% load static %}
+
+<!-- START OF HEADER -->
+<div class="container-fluid px-8 bg-blue d-flex flex-column flex-lg-row justify-content-between align-items-center mx-auto">
+
+    <div class="d-flex justify-content-between flex-row flex-wrap flex-lg-column">
+        <h2 class="text-clr-white px-3">TELE-PHARMA</h2>
+        <h5 class="text-clr-white ms-1">
+            <img src="/static/images/icons/tanzania flag.jpg" alt="" width="20" height="15"> Tanzania Trusted Online Pharmacy
+        </h5>
+    </div>
+
+    <div class="d-flex flex-nowrap justify-content-center">
+        <form action="{% url 'MedicineTrack:search' %}" method="GET" class="d-flex flex-nowrap position-relative me-3">
+            <button class="position-absolute top-50 start-0 translate-middle p-2 ms-2 border-0" type="submit"><img src="/static/images/icons/search.png" alt="" width="20" height="15"></button>
+            <input type="text" placeholder="search" name="q" class="ps-5">
+
+        </form>
+
+        <a href="{% url 'MedicineTrack:browse-medicine'%}" class="btn-submit px-5 d-none d-md-block">Scan <br> A-Z</a>
+
+    </div>
+
+    <div class="d-none d-lg-block">
+
+
+        <div class="user-profile py-2 d-flex">
+            <p class="me-3">
+                <img src="{% static 'images/profile.png'%}" alt="" width="45" height="45" class="rounded-full">
+                <!--  -->
+                {% if user.is_authenticated %}
+                <span>@{{user.username}}</span>
+                <!--  -->
+                {% endif %}
+
+            </p>
+
+
+        </div>
+        <div class="dropdown flex-column position-fixed bg-white" id="drop-down" style="display: none; top:50px; width:40rem;">
+
+            <a class="cat-link " href=" {% url 'MedicineTrack:profile'%} ">
+                <img src="{% static 'images/profile.png'%}" alt="" width="20" height="25"> profile
+            </a>
+
+
+            <a class="cat-link" href=" {% url 'MedicineTrack:logout' %} ">
+                <img src="{% static 'images/logout.png'%}" alt="" width="20" height="25"> Logout
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>

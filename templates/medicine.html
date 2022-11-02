@@ -1,0 +1,11 @@
+<div class="card col-12 col-md-6 col-lg-4 col-xl-4 border-0">
+    <div class="border shadow-lg p-1 mb-5 bg-body rounded">
+        <img src="{{product.medicine.imageURL}}" class="card-img-top" alt="..." height="200">
+        <div class="card-body">
+            <h5 class="card-title">{{product.medicine.name}}</h5>
+            <p class="card-text">Tsh {{product.medicine.getPrice}}.</p>
+            <a href="{% url 'MedicineTrack:shopping' product.medicine.id %}" class="btn btn-primary">shop now</a>
+        </div>
+    </div>
+
+</div>

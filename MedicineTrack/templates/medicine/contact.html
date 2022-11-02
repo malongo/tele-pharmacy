@@ -4,14 +4,16 @@
 <!-- NAVIGATION -->
 {% block navigation %}
 <!--  -->
-{% include 'medicine/navigation.html'%}
+{% include 'header.html'%}
+<!--  -->
+{% include 'navigation.html'%}
 <!--  -->
 {% endblock %}
 <!-- END NAVIGATION -->
 {% block content %} {% load static %}
 <div class="container">
     <div class="row">
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             <div class="card m-2">
                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
@@ -56,19 +58,19 @@
                 </div>
             </div>
         </div>
-        <div class="col-6 bg-gray">
-            <div class=" login  ">
-                <div class="text-align-center bg-gray ">
-                    <h3 class="text-clr-white">CONTACT US</h3>
+        <div class="col-12 col-md-6 shadow-lg p-1 mb-5 bg-body rounded">
+            <div class=" ">
+                <div class="shadow-lg p-1 mb-5 bg-body rounded ">
+                    <h3 class="">CONTACT US</h3>
                 </div>
                 <form method="POST" class="post-form" enctype="multipart/form-data">
                     {%csrf_token%}
-                    <div class="form-group" style="color:var(--color-blue) !important;">
-                        <label for="">Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Ente your Name" required>
-                        <label for="">Email</label>
+                    <div class="form-group">
+
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter your Name" required>
+
                         <input type="email" class="form-control" placeholder="Enter Email" name="email" required>
-                        <label for="">Subject</label>
+
                         <textarea name="subject" id="" cols="10" rows="4" class="form-control" placeholder="Enter your Message Here" required></textarea>
                     </div>
 
@@ -87,7 +89,7 @@
 <!-- FOOTER -->
 {% block footer %}
 <!--  -->
-{% include 'medicine/footer.html'%}
+{% include 'footer.html'%}
 <!--  -->
 {% endblock %}
 <!-- END FOOTER -->
