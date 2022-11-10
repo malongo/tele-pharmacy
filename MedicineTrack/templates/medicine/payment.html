@@ -2,58 +2,63 @@
 <!-- NAVIGATION -->
 {% block navigation %}
 <!--  -->
-{% include 'medicine/navigation.html'%}
+{% include 'header.html'%}
+<!--  -->
+{% include 'navigation.html'%}
 <!--  -->
 {% endblock %}
 <!-- END NAVIGATION -->
 {% block content %}
-<div class="row">
-    <div class="col-lg-6">
+<div class="row mx-2 mt-4">
+    <div class="col-md-6 col-12">
         <div class="box-element">
-            <a class="btn navbar-link" href="{{request.META.HTTP_REFERER}}">&#x2190; Back</a>
-            <hr>
-            <h3>Order Summary</h3>
-            <hr> {% for item in items %}
-            <div class="cart-row">
-                <div style="flex:2">
-                    <img class="row-image" src="{{item.medicine.imageURL}}">
+            <div class="d-flex flex-row justify-content-between mt-3 mb-2 mx-3">
+                <h3>Order Summary</h3>
+                <a class="py-2 px-3 bg-blue rounded-3 btn-2-shop" href="{{request.META.HTTP_REFERER}}">&#x2190; Back</a>
+            </div>
+
+            <!--  -->
+            {% for item in items %}
+            <div class="shadow-lg p-1 my-2 mx-2 bg-body rounded">
+                <div class="d-flex flex-row">
+                    <img src="{{item.medicine.imageURL}}" width="200" height="200">
+
+                    <div class="d-flex flex-column ms-3 justify-content-center">
+
+                        <p class="fw-bold fs-4">{{item.medicine.name}}</p>
+
+                        <div class="d-flex flex-row flex-nowrap">
+                            <p class="me-2 fs-3">${{item.medicine.getPrice|floatformat:2}} </p>
+                            <p class="fs-3">x {{item.quantity}}</p>
+                        </div>
+                    </div>
                 </div>
-                <div style="flex:2">
-                    <p>{{item.medicine.name}}</p>
-                </div>
-                <div style="flex:1">
-                    <p>${{item.medicine.getPrice|floatformat:2}}</p>
-                </div>
-                <div style="flex:1">
-                    <p>x{{item.quantity}}</p>
-                </div>
+
+
             </div>
             {% endfor %}
-            <h5>Items: {{order.get_cart_items}}</h5>
-            <h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
-
-
-
+            <div class="d-flex flex-column shadow-lg p-1 my-2 mx-2 bg-body rounded">
+                <h5 class="align-self-center fs-1 fw-bolder">Items: {{order.get_cart_items}}</h5>
+                <h5 class="align-self-center fs-1 fw-bolder">Total: ${{order.get_cart_total|floatformat:2}}</h5>
+            </div>
         </div>
-
     </div>
 
-
-
     {% if order.get_cart_items >= 1%}
-    <div class="col-lg-6">
-        <div class="box-element" id="form-wrapper">
+    <div class="col-md-6 col-12">
+        <div class="shadow-lg p-5 mb-5 bg-body rounded" id="form-wrapper">
             <h2 class="text-center">Payment Options</h2>
             <div class="container">
                 <h5>HALOTEL</h5>
+                <h5>TIGO</h5>
+                <h5>VODACOM</h5>
+                <h5>AIRTEL</h5>
+                <h5>MASTER CARD</h5>
             </div>
 
         </div>
-        {% endif %}
-        <br>
-
-
     </div>
+    {% endif %}
 
 
 </div>
@@ -65,7 +70,7 @@
 <!-- FOOTER -->
 {% block footer %}
 <!--  -->
-{% include 'medicine/footer.html'%}
+{% include 'footer.html'%}
 <!--  -->
 {% endblock %}
 <!-- END FOOTER -->

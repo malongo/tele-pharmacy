@@ -2,7 +2,9 @@
 <!-- NAVIGATION -->
 {% block navigation %}
 <!--  -->
-{% include 'medicine/navigation.html'%}
+{% include 'header.html'%}
+<!--  -->
+{% include 'navigation.html'%}
 <!--  -->
 {% endblock %}
 <!-- END NAVIGATION -->
@@ -12,86 +14,107 @@
 </div>
 <!-- CHECK IF THERE IS MEDICINE -->
 {% if cartMedicine %}
-<div class="grid-cart grid-mobile-cart">
-    <div class="container-wrapper m-3 bg-gray">
-        <h3 class="text-align-center bg-purple">Shopping Cart</h3>
+
+<div class="d-flex flex-row flex-nowrap justify-content-between mx-1 mt-4 mb-2">
+    <h3 class="">Shopping Cart</h3>
+    <a href="{{request.META.HTTP_REFERER}}" class="py-2 px-3 bg-blue rounded-3 btn-2-shop">&#x2190;Back</a>
+</div>
+
+<div class="row mx-2 mb-4">
+    <div class="col">
         <!-- ITEMS -->
         {% for item in items %}
-        <div class="grid">
+        <div class="d-flex mb-3">
 
-            <div class="container-wrapper bg-gray-1">
+            <div class="d-flex flex-column">
                 <img src="{{item.medicine.imageURL}}" alt="" width="220" height="180">
-                <div class="flex_page">
+                <div class="d-flex flex-row flex-nowrap">
                     <img src="{% static 'images/icons/x w-3.png'%}" alt="" width="20" height="20" class="btn-cart-real" data-medicine="{{item.medicine.id}}" data-action="removeAll">
-                    <p>Remove</p>
+                    <p>Remove All</p>
                 </div>
-                <h5 class="bg-gray-1 my-2"> {{item.medicine.getPrice}} @Tsh</h5>
+                <h5 class="shadow-lg p-1 mb-2 bg-body rounded my-2"> {{item.medicine.getPrice}} @Tsh</h5>
             </div>
-            <div class=" container-wrapper item3">
-                <h4 class="bg-gray">{{item.medicine.name}}</h4>
-                <h5 class="bg-gray">Total Items: <span data-item="{{item.quantity}}" id="total-item">{{item.quantity}}</span> </h5>
-                <h5 class="bg-gray">Total Price, Tsh <span id="total-price" data-price="{{item.medicine.getPrice}}">{{item.get_total|floatformat:2}}</span></h5>
-                <div class="flex-shopping bg-gray">
-                    <h4> Quantity:</h4>
-                    <button class="btn-cart btn-shopping" id="add" data-action="add">+</button>
-                    <input type="text" class="input-shopping" id="medicine_number" oninput="medicine_qty()">
-                    <button class="btn-cart btn-shopping" id="remove" data-action="remove">-</button>
+            <div class="ms-2">
+                <h4 class="fs-2 fw-bold">{{item.medicine.name}}</h4>
+                <h5 class="fs-2 fw-light">Total Items: <span data-item="{{item.quantity}}" id="total-item">{{item.quantity}}</span> </h5>
+                <h5 class="fs-2 fw-light">Total Price, <span id="total-price" data-price="{{item.medicine.getPrice}}">{{item.get_total|floatformat:2}} TZ</span></h5>
+                <div class="d-flex flex-row">
+                    <h4 class="me-2 mt-2"> Quantity:</h4>
+                    <button class="btn-shopping px-2 m-2" id="add" data-action="add">+</button>
+                    <input type="text" class="input-shopping border-2 border-dark w-25" id="medicine_number" oninput="medicine_qty()" onemptied="">
+                    <button class="btn-shopping px-2 m-2" id="remove" data-action="remove">-</button>
                 </div>
-                <div class="container-wrapper bg-white my-4">
-                    <div class="bg-gray flex">
-                        <button class="cat-link btn-2-shop btn-cart-real" data-medicine="{{item.medicine.id}}" data-action="addCart">Add To Cart</button>
-                        <button class="cat-link btn-2-shop btn-cart-real" data-medicine="{{item.medicine.id}}" data-action="removeCart">Remove From Cart</button>
-                        <a href="{{request.META.HTTP_REFERER}}" class="cat-link btn-2-shop">&#x2190;Back</a>
+                <div class="">
+                    <div class="d-flex flex-row justify-content-between">
+                        <button class="d-flex flex-row flex-nowrap py-2 px-3 bg-blue rounded-3 btn-2-shop" id="addCart" data-medicine="{{item.medicine.id}}" data-action="addCart">
+                         <img src="{% static 'images/cart.png'%}" alt="" width="25" height="25" class="">
+                         <span>Add To Cart</span>
+                         </button>
+
+
+                        <button class="d-flex flex-row flex-nowrap py-2 px-3 bg-blue rounded-3 btn-2-shop" data-medicine="{{item.medicine.id}}" data-action="removeCart">
+                     <img src="{% static 'images/cart.png'%}" alt="" width="25" height="25" class="">
+                     <span>Remove From Cart</span>
+                    
+                 </button>
                     </div>
 
                 </div>
+
+
             </div>
         </div>
-        <hr> {% endfor %}
-        <input type="submit" value="Save " class="btn-submit">
-
-    </div>
-    <div class="container-wrapper m-3 ">
-        <h3 class="text-align-center bg-purple">Order Summary</h3>
-
-        <div class="container-wrapper bg-gray">
-            <div class="flex">
-                <h4>Item:</h4>
-                <h4>{{order.get_cart_items}}</h4>
-
-            </div>
-            <div class="flex">
-                <h4>Sub Total:</h4>
-                <h4>${{order.get_cart_total|floatformat:2}}</h4>
-
-            </div>
-            <div class="flex">
-                <h4>Shipping Cost:</h4>
-                <h4>$5</h4>
-
-            </div>
-            <hr>
-            <div class="flex">
-                <h3>Total Cost:</h3>
-                <h3>${{order.get_cart_total|floatformat:2}}</h3>
-
-            </div>
-            <hr>
-
-        </div>
-
-        <div class="flex_page bg-gray">
-            <a class="btn-submit" href="{% url 'MedicineTrack:store' %}">Continue Shopping</a>
-            <a style="float:right; margin:5px;" class="btn-submit" href="{% url 'MedicineTrack:checkout' %}">Checkout</a>
-
-        </div>
-        <div class="container-wrapper bg-gray">
-            <h3>Payment</h3>
-        </div>
+        {% endfor %}
+        <!--  -->
+        <input type="submit" value="Save " class="py-2 px-3 bg-blue rounded-3 btn-2-shop">
     </div>
 
+    <div class="col">
+        <div class="shadow-lg p-5 mb-5 bg-body rounded ">
+            <h3 class="fw-bold fs-1">Order Summary</h3>
+
+            <div class="">
+                <div class="d-flex flex-row flex-nowrap justify-content-around mb-3 p-2">
+                    <h4>Item:</h4>
+                    <h4>{{order.get_cart_items}}</h4>
+
+                </div>
+                <div class="d-flex flex-row flex-nowrap justify-content-around mb-3 p-2">
+                    <h4>Sub Total:</h4>
+                    <h4>{{order.get_cart_total|floatformat:2}} TZ</h4>
+
+                </div>
+                <div class="d-flex flex-row flex-nowrap justify-content-around mb-3 p-2">
+                    <h4>Shipping Cost:</h4>
+                    <h4>5 TZ</h4>
+
+                </div>
+                <hr>
+                <div class="d-flex flex-row flex-nowrap justify-content-around mb-3 p-2">
+                    <h3>Total Cost:</h3>
+                    <h3>{{order.get_cart_total|floatformat:2}} TZ</h3>
+
+                </div>
+                <hr>
+
+            </div>
+
+            <div class="d-flex flex-row flex-nowrap justify-content-around mb-4">
+                <a class="py-2 px-3 bg-blue rounded-3 btn-2-shop" href="{% url 'MedicineTrack:store' %}">Continue Shopping</a>
+                <a class="py-2 px-3 bg-blue rounded-3 btn-2-shop" href="{% url 'MedicineTrack:checkout' %}">Checkout</a>
+
+            </div>
+            <div class="shadow-lg p-5 mb-5 bg-body rounded">
+                <h3 class="fw-bold fs-1">Payment Options</h3>
+            </div>
+        </div>
+
+    </div>
 
 </div>
+
+
+
 {% else %}
 <div class="container bg-gray">
     <h2>empty</h2>
@@ -100,7 +123,7 @@
 <!-- FOOTER -->
 {% block footer %}
 <!--  -->
-{% include 'medicine/footer.html'%}
+{% include 'footer.html'%}
 <!--  -->
 {% endblock %}
 <!-- END FOOTER -->

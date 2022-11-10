@@ -2,7 +2,9 @@
 <!-- NAVIGATION -->
 {% block navigation %}
 <!--  -->
-{% include 'medicine/navigation.html'%}
+{% include 'header.html'%}
+<!--  -->
+{% include 'navigation.html'%}
 <!--  -->
 {% endblock %}
 <!-- END NAVIGATION -->
@@ -10,16 +12,16 @@
 
 
 
-<div class="row mx-2">
+<div class="row mx-2 my-5 shadow-lg p-5 bg-body rounded border-secondary">
 
 
     {% if order.get_cart_items >= 1%}
     <div class="col-lg-6 ">
-        <div class="container-wrapper bg-gray">
-            <h3 class="bg-purple text-align-center">
+        <div class="d-flex flex-column">
+            <h3 class="fs-2 fw-bolder">
                 Shipping Information
             </h3>
-            <div class="login ">
+            <div class="shadow-lg p-5 mb-5 bg-body rounded border-secondary ">
                 <form action="{% url 'MedicineTrack:payment' order.id %}" method="POST">
                     {% csrf_token %} {{form.as_p}}
                     <input type="submit" value="Continue" class="btn-submit">
@@ -28,25 +30,23 @@
         </div>
     </div>
     {% endif %}
-    <div class="col-lg-6">
-        <!-- Video -->
-        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="{% static 'images/shipping1.avif'%}" class="d-block w-100" alt="..." height="600px">
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static 'images/shipping2.webp'%}" class="d-block w-100" alt="..." height="600px">
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static 'images/shipping3.webp'%}" class="d-block w-100" alt="..." height="600px">
-                </div>
+
+    <!-- Video -->
+    <div id="carouselExampleSlidesOnly" class="carousel slide shadow mb-5 bg-body rounded border-secondary col-md-6 col-12" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'images/shipping1.avif'%}" class="d-block w-100" alt="..." height="600px">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/shipping2.webp'%}" class="d-block w-100" alt="..." height="600px">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/shipping3.webp'%}" class="d-block w-100" alt="..." height="600px">
             </div>
         </div>
     </div>
-
-
 </div>
+
 
 
 
@@ -178,7 +178,7 @@
 <!-- FOOTER -->
 {% block footer %}
 <!--  -->
-{% include 'medicine/footer.html'%}
+{% include 'footer.html'%}
 <!--  -->
 {% endblock %}
 <!-- END FOOTER -->

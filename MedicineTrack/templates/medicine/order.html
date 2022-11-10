@@ -2,23 +2,25 @@
 <!-- NAVIGATION -->
 {% block navigation %}
 <!--  -->
-{% include 'medicine/navigation.html'%}
+{% include 'header.html'%}
+<!--  -->
+{% include 'navigation.html'%}
 <!--  -->
 {% endblock %}
 <!-- END NAVIGATION -->
 {% block content %}
 
 <!--Table-->
-<div class="container-wrapper mx-2">
-    <div class="grid grid-mobile bg-gray">
-        <div class="container-wrapper bg-gray">
+<div class="">
+    <div class="">
+        <div class="">
             <h3>@{{request.user}} Enjoy Our Service Automate Your Pharmacy Grow With Technology</h3>
             <div>
                 “To be honest, the best thing about choosing Postmates, over other delivery services, is its customer service. Postmates’ customer service is superior in all aspects, starting with the way they treat people’s packages. I would choose it any day.” The
                 word “superior” suggests elevation or being better than everything else. Unlike other words to describe top service, this one evokes feelings of high quality and high standards.
             </div>
         </div>
-        <div class="row bg-gray">
+        <div class="row ">
             {% if order %}
             <div class="col-md-8 mx-auto">
                 <table class="table bg-white">
@@ -61,7 +63,7 @@
                 </table>
             </div>
             {% else %}
-            <div class="container-wrapper ">
+            <div class=" ">
                 <h4>what is up</h4>
             </div>
             {% endif %}
@@ -81,7 +83,7 @@
 <!-- FOOTER -->
 {% block footer %}
 <!--  -->
-{% include 'medicine/footer.html'%}
+{% include 'footer.html'%}
 <!--  -->
 {% endblock %}
 <!-- END FOOTER -->
