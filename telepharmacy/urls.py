@@ -23,3 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('MedicineTrack.urls')),
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+admin.site.site_header = "TELE-PHARMACY ADMINISTRATION"
+admin.site.site_title = "TELE-PHARMACY"
+admin.site.index_title = "tele-pharmacy"
